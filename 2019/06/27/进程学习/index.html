@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>进程学习 | mkzpd</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述进程是系统和网络编程的一个重要概念,把比较重要的知识点记录下来.">
+<meta name="keywords" content="系统编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程学习">
+<meta property="og:url" content="http://yoursite.com/2019/06/27/进程学习/index.html">
+<meta property="og:site_name" content="mkzpd">
+<meta property="og:description" content="概述进程是系统和网络编程的一个重要概念,把比较重要的知识点记录下来.">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-27T06:47:27.376Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="进程学习">
+<meta name="twitter:description" content="概述进程是系统和网络编程的一个重要概念,把比较重要的知识点记录下来.">
+  
+    <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">mkzpd</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-进程学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/27/进程学习/" class="article-date">
+  <time datetime="2019-06-27T02:06:07.000Z" itemprop="datePublished">2019-06-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      进程学习
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>进程是系统和网络编程的一个重要概念,把比较重要的知识点记录下来.</p>
+<a id="more"></a>
+
+<h3 id="获取进程ID"><a href="#获取进程ID" class="headerlink" title="获取进程ID"></a>获取进程ID</h3><p>每个进程都有一个唯一的正数(非零)进程ID(PID).getpid函数返回调用进程的PID.getppid函数返回它的父进程的PID(创建调用进程的进程).</p>
+<pre><code>#include &lt;sys.types.h&gt;
+#include &lt;unistd.h&gt;
+
+pid_t getpid(void);
+pid_t getppid(void);</code></pre><p>getpid和getppid函数返回一个类型为pid_t的整数值,在Linux系统上它在types.h中被定义为int.</p>
+<h3 id="创建进程"><a href="#创建进程" class="headerlink" title="创建进程"></a>创建进程</h3><p>父进程通过调用fork函数创建一个新的运行的子程序.</p>
+<pre><code>#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+
+pid_t fork(void);</code></pre><p>注:子进程返回0,父进程返回子进程的PID,如果出错,则为-1.</p>
+<p>fork函数有以下几个特点:    </p>
+<ol>
+<li>fork函数被父进程调用一次,但是却返回两次 — 一次是返回到父进程,一次是返回到新创建的子进程.</li>
+<li>父进程和子进程是并发运行的独立进程.内核能够以任意方式交替执行它们的逻辑控制流中的指令.</li>
+<li>父进程和子进程的地址空间都是相同的,每个进程有相同的用户栈,相同的本地变量值,相同的堆,相同的全局变量值.</li>
+<li>父进程和子进程共享文件.子进程继承了父进程所有的打开文件.</li>
+</ol>
+<p>区别:父进程和子进程之间最大的区别在于它们有不同的PID.</p>
+<p>下面这个程序说明了fork函数的特点:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line">#include &lt;errno.h&gt;</span><br><span class="line">#include &lt;string.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line"></span><br><span class="line">pid_t Fork(void);</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">    pid_t pid;</span><br><span class="line">    int x = 1;</span><br><span class="line"></span><br><span class="line">    pid = Fork();</span><br><span class="line">    if(pid == 0)&#123;</span><br><span class="line">        printf(&quot;p1: x = %d\n&quot;,++x);</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;p2: x = %d\n&quot;,--x);</span><br><span class="line">    exit(0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">pid_t Fork(void)</span><br><span class="line">&#123;</span><br><span class="line">    pid_t pid;</span><br><span class="line"></span><br><span class="line">    if((pid = fork()) &lt; 0)&#123;</span><br><span class="line">        fprintf(stderr,&quot;fork error: %s\n&quot;,strerror(errno));</span><br><span class="line">        exit(0);</span><br><span class="line">    &#125;</span><br><span class="line">    return pid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面程序工作原理如下:</p>
+<pre><code>                      p1: x = 2        p2: x = 1
+             ---------------&gt;&apos;--------------&gt;&apos;-------------&gt;&apos;          子进程
+             |            printf          printf          exit
+             |
+             |
+   x == 1    |        p2: x = 0
+ &apos;-----------&gt;&apos;-------------&gt;&apos;--------------&gt;&apos;                         父进程
+main       fork           printf          exit</code></pre><p>子进程输出:</p>
+<pre><code>p1: x = 2
+p2: x = 1</code></pre><p>父进程输出:</p>
+<pre><code>p2: x = 0</code></pre><h3 id="终止进程"><a href="#终止进程" class="headerlink" title="终止进程"></a>终止进程</h3><p>调用exit函数终止进程</p>
+<pre><code>#include &lt;stdlib.h&gt;
+
+void exit(int status);</code></pre><h3 id="回收子进程"><a href="#回收子进程" class="headerlink" title="回收子进程"></a>回收子进程</h3><p>一个进程可以通过调用waitpid函数来等待它的子进程终止或者停止.</p>
+<pre><code>#include &lt;sys/types.h&gt;
+#include &lt;sys/wait.h&gt;
+
+pid_t waitpid(pid_t pid, int *statusp, int options);</code></pre><p>另外,wait函数是waitpid函数的简单版本:</p>
+<pre><code>#include &lt;sys/types.h&gt;
+#include &lt;sys/wait.h&gt;
+
+pid_t wait(int *statusp);</code></pre><h3 id="进程休眠"><a href="#进程休眠" class="headerlink" title="进程休眠"></a>进程休眠</h3><p>sleep函数将一个进程挂起一段指定时间:</p>
+<pre><code>#include &lt;unistd.h&gt;
+
+unsigned int sleep(unsigned int secs);</code></pre><p>还有一个pause函数,该函数让调用函数休眠,直到该进程收到一个信号.</p>
+<pre><code>#include &lt;unistd.h&gt;
+
+int pause(void);</code></pre><h3 id="加载并运行程序"><a href="#加载并运行程序" class="headerlink" title="加载并运行程序"></a>加载并运行程序</h3><p>execve函数在当前进程的上下文中加载并运行一个新程序.</p>
+<pre><code>#include &lt;unistd.h&gt;
+
+int execve(const char *filename, const char *argv[], const char *envp[]);</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/27/进程学习/" data-id="cjxe1w7s10005krfxacmfv9o4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统编程/">系统编程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/06/26/IP地址与点分十进制串的相互转换/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">IP地址与点分十进制串的相互转换</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字节顺序/">字节顺序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统编程/">系统编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a> <a href="/tags/字节顺序/" style="font-size: 10px;">字节顺序</a> <a href="/tags/系统编程/" style="font-size: 20px;">系统编程</a> <a href="/tags/网络编程/" style="font-size: 10px;">网络编程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/06/27/进程学习/">进程学习</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/IP地址与点分十进制串的相互转换/">IP地址与点分十进制串的相互转换</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/25/实现ls命令/">实现ls命令</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/19/字节顺序/">字节顺序</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/18/博客搭建/">博客搭建</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 mkzpd<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
