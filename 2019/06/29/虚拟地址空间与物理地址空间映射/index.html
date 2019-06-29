@@ -5,15 +5,20 @@
   
 
   
-  <title>Tag: 系统编程 | mkzpd</title>
+  <title>虚拟地址空间与物理地址空间映射 | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="mkzpd">
-<meta property="og:url" content="http://yoursite.com/tags/系统编程/index.html">
+  <meta name="description" content="概述CPU为什么要使用虚拟地址空间与物理地址空间映射?解决了什么样的问题?">
+<meta name="keywords" content="系统编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="虚拟地址空间与物理地址空间映射">
+<meta property="og:url" content="http://yoursite.com/2019/06/29/虚拟地址空间与物理地址空间映射/index.html">
 <meta property="og:site_name" content="mkzpd">
+<meta property="og:description" content="概述CPU为什么要使用虚拟地址空间与物理地址空间映射?解决了什么样的问题?">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-29T10:16:05.023Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mkzpd">
+<meta name="twitter:title" content="虚拟地址空间与物理地址空间映射">
+<meta name="twitter:description" content="概述CPU为什么要使用虚拟地址空间与物理地址空间映射?解决了什么样的问题?">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -60,78 +65,64 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/29/虚拟地址空间与物理地址空间映射/" class="archive-article-date">
-  <time datetime="2019-06-29T10:04:28.000Z" itemprop="datePublished">Jun 29</time>
+        <section id="main"><article id="post-虚拟地址空间与物理地址空间映射" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/06/29/虚拟地址空间与物理地址空间映射/" class="article-date">
+  <time datetime="2019-06-29T10:04:28.000Z" itemprop="datePublished">2019-06-29</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/29/虚拟地址空间与物理地址空间映射/">虚拟地址空间与物理地址空间映射</a>
+    <h1 class="article-title" itemprop="name">
+      虚拟地址空间与物理地址空间映射
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/27/进程学习/" class="archive-article-date">
-  <time datetime="2019-06-27T02:06:07.000Z" itemprop="datePublished">Jun 27</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/27/进程学习/">进程学习</a>
-    </h1>
-  
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>CPU为什么要使用虚拟地址空间与物理地址空间映射?解决了什么样的问题?</p>
+<a id="more"></a>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/25/实现ls命令/" class="archive-article-date">
-  <time datetime="2019-06-25T00:46:30.000Z" itemprop="datePublished">Jun 25</time>
-</a>
+<h3 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h3><ol>
+<li><p>方便编译器和操作系统安排程序的地址分布.<br>程序可以使用一系列相邻的虚拟地址来访问物理内存中不相邻的大内存缓冲区.</p>
+</li>
+<li><p>方便进程之间间隔<br>不同进程使用的虚拟地址彼此隔离.一个进程中的代码无法更改正在由另一个进程使用的物理内存.</p>
+</li>
+<li><p>方便OS使用你电脑可怜的内存<br>程序可以使用一系列虚拟地址来访问大于可用物理内存的内存缓冲区.当物理内存的供应量变小时,<br>内存管理会将物理内存页(通常大小为4KB)保存到磁盘文件.数据或代码会根据需要在物理内存与<br>磁盘之间移动.</p>
+</li>
+</ol>
+
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/25/实现ls命令/">实现ls命令</a>
-    </h1>
-  
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/06/29/虚拟地址空间与物理地址空间映射/" data-id="cjxhdcri600085hfxth3d1fvz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统编程/">系统编程</a></li></ul>
 
-    </header>
+    </footer>
   </div>
-</article>
+  
+    
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2019/06/28/为什么说TCP提供可靠的传输服务/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">为什么说TCP提供可靠的传输服务</div>
+    </a>
   
+</nav>
 
+  
+</article>
 
 </section>
         
