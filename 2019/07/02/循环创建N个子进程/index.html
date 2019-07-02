@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="mkzpd">
 <meta property="og:description" content="概述fork函数对于并发编程来说还是比较重要的,记录下利用fork函数循环创建N个子进程.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-02T01:41:21.200Z">
+<meta property="og:updated_time" content="2019-07-02T04:02:29.963Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="循环创建N个子进程">
 <meta name="twitter:description" content="概述fork函数对于并发编程来说还是比较重要的,记录下利用fork函数循环创建N个子进程.">
@@ -111,10 +111,18 @@ I&apos;m a parent
 <font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../test-code</b></font>$
 </pre>
 
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>父子进程之间在fork后,有哪些相同,哪些异同之处?</p>
+<p>刚fork后:</p>
+<p>父子相同处: 相同变量, .data, .text, 栈，堆,环境变量, 用户ID, 宿主目录, 进程工作目录, 信号处理方式……<br>父子不同处: 进程ID, fork返回值, 父进程, 进程运行时间, 闹钟(定时器), 未决信号集</p>
+<p>似乎, 子进程复制了父进程0-3G用户空间内容,以及父进程的PCB,但pid不同,真的每fork一个子进程都要将父进程的0-3G地址空间完全<br>拷贝一份,然后映射至物理内存吗?</p>
+<p>当然不是!父子进程间遵循<font color="red"><b>读时共享写时复制</b></font>的原则.这样设计,无论子进程执行父进程的逻辑还是执行自己的逻辑都能节省内存开销.</p>
+<p>重点!!!!! 父子进程不共享全局变量.父子进程共享的是文件描述符号(打开文件的结构体)和mmap建立的映射区.</p>
+<p>特别的,fork之后父进程先执行还是子进程先执行不确定.取决于内核所使用的调度算法.父进程和子进程争夺使用CPU资源,谁先争夺到,<br>谁先执行.没有固定的先后执行顺序.</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/02/循环创建N个子进程/" data-id="cjxl5argp0005pwfxfgdxcxb5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/02/循环创建N个子进程/" data-id="cjxla0qt5000cupfxttdmwg04" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统编程/">系统编程</a></li></ul>
