@@ -5,22 +5,20 @@
   
 
   
-  <title>为什么说TCP提供可靠的传输服务 | mkzpd</title>
+  <title>TCP与UDP的区别 | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="概述最近在深入学习理解TCP/IP,看到IP提供的是一种不可靠的服务,TCP在不可靠的IP层上提供了一个可靠的运输层.">
+  <meta name="description" content="概述TCP和UDP是OSI模型中的运输层中的协议.TCP提供可靠的通信传输,而UDP则常被用于让广播和细节控制交给应用的通信传输.">
 <meta name="keywords" content="TCP&#x2F;IP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="为什么说TCP提供可靠的传输服务">
-<meta property="og:url" content="http://yoursite.com/2019/06/28/为什么说TCP提供可靠的传输服务/index.html">
+<meta property="og:title" content="TCP与UDP的区别">
+<meta property="og:url" content="http://yoursite.com/2019/07/03/TCP与UDP的区别/index.html">
 <meta property="og:site_name" content="mkzpd">
-<meta property="og:description" content="概述最近在深入学习理解TCP/IP,看到IP提供的是一种不可靠的服务,TCP在不可靠的IP层上提供了一个可靠的运输层.">
+<meta property="og:description" content="概述TCP和UDP是OSI模型中的运输层中的协议.TCP提供可靠的通信传输,而UDP则常被用于让广播和细节控制交给应用的通信传输.">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/picture1.PNG">
-<meta property="og:updated_time" content="2019-06-29T02:29:57.626Z">
+<meta property="og:updated_time" content="2019-07-03T09:15:33.212Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="为什么说TCP提供可靠的传输服务">
-<meta name="twitter:description" content="概述最近在深入学习理解TCP/IP,看到IP提供的是一种不可靠的服务,TCP在不可靠的IP层上提供了一个可靠的运输层.">
-<meta name="twitter:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/picture1.PNG">
+<meta name="twitter:title" content="TCP与UDP的区别">
+<meta name="twitter:description" content="概述TCP和UDP是OSI模型中的运输层中的协议.TCP提供可靠的通信传输,而UDP则常被用于让广播和细节控制交给应用的通信传输.">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -67,10 +65,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-为什么说TCP提供可靠的传输服务" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-TCP与UDP的区别" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/28/为什么说TCP提供可靠的传输服务/" class="article-date">
-  <time datetime="2019-06-28T07:36:27.000Z" itemprop="datePublished">2019-06-28</time>
+    <a href="/2019/07/03/TCP与UDP的区别/" class="article-date">
+  <time datetime="2019-07-03T08:54:51.000Z" itemprop="datePublished">2019-07-03</time>
 </a>
     
   </div>
@@ -81,7 +79,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      为什么说TCP提供可靠的传输服务
+      TCP与UDP的区别
     </h1>
   
 
@@ -89,18 +87,43 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>最近在深入学习理解TCP/IP,看到IP提供的是一种不可靠的服务,TCP在不可靠的IP层上提供了一个可靠的运输层.</p>
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>TCP和UDP是OSI模型中的运输层中的协议.TCP提供可靠的通信传输,而UDP则常被用于让广播和细节控制交给应用的通信传输.</p>
 <a id="more"></a>
 
-<h3 id="图示说明"><a href="#图示说明" class="headerlink" title="图示说明"></a>图示说明</h3><p><img src="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/picture1.PNG" alt="TCP和IP图示说明"></p>
-<h3 id="比较正式的解释"><a href="#比较正式的解释" class="headerlink" title="比较正式的解释"></a>比较正式的解释</h3><p>在TCP/IP协议族中,网络层IP提供的是一种不可靠的服务.也就是说,它只是尽可能快地把分组从源结点送到目的结点,<br>但是并不提供任何可靠性保证.而另一方面,TCP在不可靠的IP层上提供了一个可靠的运输层.为了提供这种可靠的服务,<br>TCP采用了超时重传,发送和接受端到端的确认分组等机制.</p>
-<h3 id="通俗理解"><a href="#通俗理解" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>根据图示可以通俗的理解为淘宝买家通过淘宝(TCP协议)这个可靠的平台买了一部手机(建立握手),卖家收到消息后确认请求,<br>卖家开始发货(发送),选择了一个快递公司运送手机(传输过程),但是快递员(IP协议)只知道送的是一个包裹(数据包),并不<br>清楚里面具体是什么物品,快递员(IP协议)负责送到目的地,只负责传送,丢失不管(为了更好理解TCP/IP而假设的一种情况),<br>过了几天买家反馈给卖家说,几天过去了我还没有收到手机,卖家确认买家没有收到手机后,又重新发了一个手机的快递包裹<br>(超时重传),并嘱咐快递员尽量送到目的地,这次买家反馈给卖家说已经收到手机包裹了(发送端和接受端的端到端确认过程),<br>买家在淘宝上点击确认收货,卖家收到货款(结束过程).</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>IP特点: 只知道要传送的是一个数据报,尽量传送到目的地,只负责传送,丢失不管.<br>TCP特点: 为了提供可靠的服务,有建立握手的过程,传输过程,超时重传过程,发送端和接受端的端到端确认过程,结束过程.</p>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><p>TCP与UDP基本区别:</p>
+<ol>
+<li><p>基于连接与无连接.</p>
+</li>
+<li><p>TCP要求系统资源较多,UDP较少.</p>
+</li>
+<li><p>UDP程序结构较简单.</p>
+</li>
+<li><p>流模式(TCP)与数据报模式(UDP).</p>
+</li>
+<li><p>TCP保证数据正确性，UDP可能丢包.</p>
+</li>
+<li><p>TCP保证数据顺序，UDP不保证.</p>
+</li>
+<li><p>TCP面向连接(如打电话要先拨号建立连接);UDP是无连接的,即发送数据之前不需要建立连接.</p>
+</li>
+<li><p>CP提供可靠的服务.也就是说,通过TCP连接传送的数据,无差错,不丢失,不重复,且按序到达;UDP尽最大努力交付,即不保证可靠交付.</p>
+</li>
+<li><p>TCP面向字节流,实际上是TCP把数据看成一连串无结构的字节流;UDP是面向报文的;UDP没有拥塞控制,因此网络出现拥塞不会使<br>源主机的发送速率降低(对实时应用很有用,如IP电话,实时视频会议等)</p>
+</li>
+<li><p>每一条TCP连接只能是点到点的;UDP支持一对一,一对多,多对一和多对多的交互通信.</p>
+</li>
+<li><p>TCP首部开销20字节;UDP的首部开销小,只有8个字节.</p>
+</li>
+<li><p>TCP的逻辑通信信道是全双工的可靠信道,UDP则是不可靠信道.</p>
+</li>
+</ol>
+<p>TCP(Transmission Control Protocol 传输控制协议)是一种面向连接的,可靠的,基于字节流的传输层通信协议,由IETF的RFC 793定义.<br>在简化的计算机网络OSI模型中,完成第四层传输层所指定的功能.</p>
+<p>UDP 是User Datagram Protocol的简称, 中文名是用户数据报协议,是OSI(Open System Interconnection,开放式系统互联) 参考模型中<br>一种无连接的传输层协议,提供面向事务的简单不可靠信息传送服务,IETF RFC 768是UDP的正式规范.UDP在IP报文的协议号是17.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/28/为什么说TCP提供可靠的传输服务/" data-id="cjxn0u70s0005h4fxne51sv5h" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/03/TCP与UDP的区别/" data-id="cjxn0u70g0003h4fxb2u4by63" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
@@ -111,19 +134,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/06/29/虚拟地址空间与物理地址空间映射/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          虚拟地址空间与物理地址空间映射
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/06/27/进程学习/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/07/02/循环创建N个子进程/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">进程学习</div>
+      <div class="article-nav-title">循环创建N个子进程</div>
     </a>
   
 </nav>
