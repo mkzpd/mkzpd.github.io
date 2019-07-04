@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="mkzpd">
 <meta property="og:description" content="概述最近在深入学习Unix/Linux系统编程,发现stat与lstat函数的参数一样,所以决定研究下,发现二者的区别. int stat(const char *pathname, struct stat *statbuf); int lstat(const char *pathname, struct stat *statbuf);">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-01T02:09:53.538Z">
+<meta property="og:updated_time" content="2019-07-04T09:43:50.308Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="stat函数与lstat函数的区别">
 <meta name="twitter:description" content="概述最近在深入学习Unix/Linux系统编程,发现stat与lstat函数的参数一样,所以决定研究下,发现二者的区别. int stat(const char *pathname, struct stat *statbuf); int lstat(const char *pathname, struct stat *statbuf);">
@@ -91,7 +91,7 @@
 <pre><code>int stat(const char *pathname, struct stat *statbuf);
 int lstat(const char *pathname, struct stat *statbuf);</code></pre><a id="more"></a>       
 
-<h3 id="论证"><a href="#论证" class="headerlink" title="论证"></a>论证</h3><p>写一个测试文件test.c,用ls -l命令查看详细情况.</p>
+<h2 id="论证"><a href="#论证" class="headerlink" title="论证"></a>论证</h2><p>写一个测试文件test.c,用ls -l命令查看详细情况.</p>
 <pre><font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/my-code</b></font>$ ls -l test.c 
 -rw-r--r-- 1 haha haha 528528 Jul  1 09:47 test.c
 </pre>
@@ -129,12 +129,12 @@ file size = 25
 
 <p>从上面输出可以看出软链接test.soft和原文件test.c大小不相等.</p>
 <p>所以不同点在于用两个程序查看test.c的软链接文件大小不想等,lstat只是计算软链接的大小,而stat是计算软链接映射的原文件大小.</p>
-<h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>stat函数一般称作穿透(追踪)函数,当然是相对于软链接来说的.<br>lstat函数一般般称作不穿透(追踪)函数,也是相对于软链接来说的.</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>stat函数一般称作穿透(追踪)函数,当然是相对于软链接来说的.<br>lstat函数一般般称作不穿透(追踪)函数,也是相对于软链接来说的.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/01/stat函数与lstat函数的区别/" data-id="cjxn0u70m0004h4fxo1eahx4i" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/01/stat函数与lstat函数的区别/" data-id="cjxograqo00040zfxwwmklpin" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统编程/">系统编程</a></li></ul>
@@ -208,6 +208,10 @@ file size = 25
       <ul>
         
           <li>
+            <a href="/2019/07/04/为什么IP要采用面向无连接/">为什么IP要采用面向无连接</a>
+          </li>
+        
+          <li>
             <a href="/2019/07/03/TCP与UDP的区别/">TCP与UDP的区别</a>
           </li>
         
@@ -221,10 +225,6 @@ file size = 25
         
           <li>
             <a href="/2019/06/30/ARP-地址解析协议的工作原理/">ARP:地址解析协议的工作原理</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/29/虚拟地址空间与物理地址空间映射/">虚拟地址空间与物理地址空间映射</a>
           </li>
         
       </ul>

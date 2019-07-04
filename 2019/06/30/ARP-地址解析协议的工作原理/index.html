@@ -7,18 +7,18 @@
   
   <title>ARP:地址解析协议的工作原理 | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="概述ARP对于安全来说很重要,因为它非常的不安全.">
+  <meta name="description" content="概述ARP功能: 从分组数据包的IP地址中解析出物理地址(MAC地址)的一种协议.安全性:ARP对于安全来说很重要,因为它非常的不安全.">
 <meta name="keywords" content="TCP&#x2F;IP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ARP:地址解析协议的工作原理">
 <meta property="og:url" content="http://yoursite.com/2019/06/30/ARP-地址解析协议的工作原理/index.html">
 <meta property="og:site_name" content="mkzpd">
-<meta property="og:description" content="概述ARP对于安全来说很重要,因为它非常的不安全.">
+<meta property="og:description" content="概述ARP功能: 从分组数据包的IP地址中解析出物理地址(MAC地址)的一种协议.安全性:ARP对于安全来说很重要,因为它非常的不安全.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-30T10:18:08.936Z">
+<meta property="og:updated_time" content="2019-07-04T09:44:41.533Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ARP:地址解析协议的工作原理">
-<meta name="twitter:description" content="概述ARP对于安全来说很重要,因为它非常的不安全.">
+<meta name="twitter:description" content="概述ARP功能: 从分组数据包的IP地址中解析出物理地址(MAC地址)的一种协议.安全性:ARP对于安全来说很重要,因为它非常的不安全.">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -87,15 +87,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ARP对于安全来说很重要,因为它非常的不安全.</p>
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>ARP功能: 从分组数据包的IP地址中解析出物理地址(MAC地址)的一种协议.<br>安全性:ARP对于安全来说很重要,因为它非常的不安全.</p>
 <a id="more"></a>
 
-<h3 id="ARP工作原理的解析"><a href="#ARP工作原理的解析" class="headerlink" title="ARP工作原理的解析"></a>ARP工作原理的解析</h3><p>应用程序首先调用DNS解析,把域名转换为IP地址,然后要求TCP建立连接,TCP封包到IP,IP查路由表,<br>判断是否直连,然后作出判断到底解析哪个IP地址.接下来发送ARP的二层广播包,此时所有网络的主<br>机都会收到,但是只有一个主机发现我的IP地址正好是你要的,那么这个主机会发送一个二级的单播<br>包反馈给发送ARP的二层广播包的主机.此时发送主机有MAC地址和映射,后续两个主机就可以相互通<br>信发送数据包.</p>
+<h2 id="ARP工作原理的解析"><a href="#ARP工作原理的解析" class="headerlink" title="ARP工作原理的解析"></a>ARP工作原理的解析</h2><p>应用程序首先调用DNS解析,把域名转换为IP地址,然后要求TCP建立连接,TCP封包到IP,IP查路由表,<br>判断是否直连,然后作出判断到底解析哪个IP地址.接下来发送ARP的二层广播包,此时所有网络的主<br>机都会收到,但是只有一个主机发现我的IP地址正好是你要的,那么这个主机会发送一个二级的单播<br>包反馈给发送ARP的二层广播包的主机.此时发送主机有MAC地址和映射,后续两个主机就可以相互通<br>信发送数据包.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/30/ARP-地址解析协议的工作原理/" data-id="cjxn0u6zh0000h4fxzuym00dh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/30/ARP-地址解析协议的工作原理/" data-id="cjxograpk00000zfxfcglv9i8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
@@ -169,6 +169,10 @@
       <ul>
         
           <li>
+            <a href="/2019/07/04/为什么IP要采用面向无连接/">为什么IP要采用面向无连接</a>
+          </li>
+        
+          <li>
             <a href="/2019/07/03/TCP与UDP的区别/">TCP与UDP的区别</a>
           </li>
         
@@ -182,10 +186,6 @@
         
           <li>
             <a href="/2019/06/30/ARP-地址解析协议的工作原理/">ARP:地址解析协议的工作原理</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/29/虚拟地址空间与物理地址空间映射/">虚拟地址空间与物理地址空间映射</a>
           </li>
         
       </ul>

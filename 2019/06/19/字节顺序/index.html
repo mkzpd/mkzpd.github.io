@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="mkzpd">
 <meta property="og:description" content="概述不同的机器有不同的字节顺序存储方法，一般分为小端法和大端法。下面解释下小端法和大端法。 小端法:最低有效字节在最前面。大端法:最高有效字节在最前面。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-19T02:32:56.976Z">
+<meta property="og:updated_time" content="2019-07-04T09:41:02.156Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="字节顺序">
 <meta name="twitter:description" content="概述不同的机器有不同的字节顺序存储方法，一般分为小端法和大端法。下面解释下小端法和大端法。 小端法:最低有效字节在最前面。大端法:最高有效字节在最前面。">
@@ -91,7 +91,7 @@
 <p>小端法:最低有效字节在最前面。<br>大端法:最高有效字节在最前面。</p>
 <a id="more"></a>
 
-<h3 id="验证自己的电脑使用大端法还是小端法"><a href="#验证自己的电脑使用大端法还是小端法" class="headerlink" title="验证自己的电脑使用大端法还是小端法"></a>验证自己的电脑使用大端法还是小端法</h3><p>下面这个程序可以验证你的电脑是使用大端法还是小端法。</p>
+<h2 id="验证自己的电脑使用大端法还是小端法"><a href="#验证自己的电脑使用大端法还是小端法" class="headerlink" title="验证自己的电脑使用大端法还是小端法"></a>验证自己的电脑使用大端法还是小端法</h2><p>下面这个程序可以验证你的电脑是使用大端法还是小端法。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">//Named ShowInt.c</span><br><span class="line"></span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">typedef unsigned char *byte_pointer;</span><br><span class="line"></span><br><span class="line">void show_bytes(byte_pointer start, size_t len);</span><br><span class="line">void show_int(int x);</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">    int x = 12345;</span><br><span class="line">    printf(&quot;%d = 0x%x\n&quot;,x,x);</span><br><span class="line">    show_int(x);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void show_bytes(byte_pointer start, size_t len)</span><br><span class="line">&#123;</span><br><span class="line">    size_t i;</span><br><span class="line">    for(i = 0; i &lt; len; i++)&#123;</span><br><span class="line">        printf(&quot; %.2x&quot;,start[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void show_int(int x)</span><br><span class="line">&#123;</span><br><span class="line">    show_bytes((byte_pointer)&amp;x, sizeof(int));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>使用下面的命令编译，运行:</p>
@@ -99,13 +99,13 @@
 ./ShowInt</code></pre><p>程序输出:</p>
 <pre><code>12345 = 0x3039
 39 30 00 00</code></pre><p>通常书写数字的时候最高有效位在左边，最低有效位在右边，拿上面例子来说，30是最高有效位，<br>但是实际情况是最低有效位39先输出，与通常书写数字顺序相反，说明我的这个电脑是小端法机器。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>可以在其它机器上做实验，最终会发现Linux 32,Windows,Linux 64是小端法机器，Sun是大端法机器。</p>
-<h3 id="延伸"><a href="#延伸" class="headerlink" title="延伸"></a>延伸</h3><p>有些机器是大端法，有些机器是小端法，那么它们在进行网络通信传输字节的时候，<br>因特网主机可以有不同的主机字节顺序，字节可能会出现反序的情况，为此TCP/IP为任意整数数据项<br>定义了统一的网络字节顺序 — 大端字节顺序。例如IP地址，它放在包头中跨过网络被携带。在IP地址<br>结构中存放的地址总是以(大端法)网络字节顺序存放的，即使主机字节顺序是小端法。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>可以在其它机器上做实验，最终会发现Linux 32,Windows,Linux 64是小端法机器，Sun是大端法机器。</p>
+<h2 id="延伸"><a href="#延伸" class="headerlink" title="延伸"></a>延伸</h2><p>有些机器是大端法，有些机器是小端法，那么它们在进行网络通信传输字节的时候，<br>因特网主机可以有不同的主机字节顺序，字节可能会出现反序的情况，为此TCP/IP为任意整数数据项<br>定义了统一的网络字节顺序 — 大端字节顺序。例如IP地址，它放在包头中跨过网络被携带。在IP地址<br>结构中存放的地址总是以(大端法)网络字节顺序存放的，即使主机字节顺序是小端法。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/19/字节顺序/" data-id="cjxn0u714000ah4fx0foilyjj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/19/字节顺序/" data-id="cjxograrg000d0zfx2ahbmr77" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/字节顺序/">字节顺序</a></li></ul>
@@ -179,6 +179,10 @@
       <ul>
         
           <li>
+            <a href="/2019/07/04/为什么IP要采用面向无连接/">为什么IP要采用面向无连接</a>
+          </li>
+        
+          <li>
             <a href="/2019/07/03/TCP与UDP的区别/">TCP与UDP的区别</a>
           </li>
         
@@ -192,10 +196,6 @@
         
           <li>
             <a href="/2019/06/30/ARP-地址解析协议的工作原理/">ARP:地址解析协议的工作原理</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/29/虚拟地址空间与物理地址空间映射/">虚拟地址空间与物理地址空间映射</a>
           </li>
         
       </ul>

@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="mkzpd">
 <meta property="og:description" content="概述进程是系统和网络编程的一个重要概念,把比较重要的知识点记录下来.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-27T06:47:27.376Z">
+<meta property="og:updated_time" content="2019-07-04T09:42:35.080Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="进程学习">
 <meta name="twitter:description" content="概述进程是系统和网络编程的一个重要概念,把比较重要的知识点记录下来.">
@@ -90,13 +90,13 @@
         <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>进程是系统和网络编程的一个重要概念,把比较重要的知识点记录下来.</p>
 <a id="more"></a>
 
-<h3 id="获取进程ID"><a href="#获取进程ID" class="headerlink" title="获取进程ID"></a>获取进程ID</h3><p>每个进程都有一个唯一的正数(非零)进程ID(PID).getpid函数返回调用进程的PID.getppid函数返回它的父进程的PID(创建调用进程的进程).</p>
+<h2 id="获取进程ID"><a href="#获取进程ID" class="headerlink" title="获取进程ID"></a>获取进程ID</h2><p>每个进程都有一个唯一的正数(非零)进程ID(PID).getpid函数返回调用进程的PID.getppid函数返回它的父进程的PID(创建调用进程的进程).</p>
 <pre><code>#include &lt;sys.types.h&gt;
 #include &lt;unistd.h&gt;
 
 pid_t getpid(void);
 pid_t getppid(void);</code></pre><p>getpid和getppid函数返回一个类型为pid_t的整数值,在Linux系统上它在types.h中被定义为int.</p>
-<h3 id="创建进程"><a href="#创建进程" class="headerlink" title="创建进程"></a>创建进程</h3><p>父进程通过调用fork函数创建一个新的运行的子程序.</p>
+<h2 id="创建进程"><a href="#创建进程" class="headerlink" title="创建进程"></a>创建进程</h2><p>父进程通过调用fork函数创建一个新的运行的子程序.</p>
 <pre><code>#include &lt;sys/types.h&gt;
 #include &lt;unistd.h&gt;
 
@@ -123,10 +123,10 @@ pid_t fork(void);</code></pre><p>注:子进程返回0,父进程返回子进程�
 main       fork           printf          exit</code></pre><p>子进程输出:</p>
 <pre><code>p1: x = 2
 p2: x = 1</code></pre><p>父进程输出:</p>
-<pre><code>p2: x = 0</code></pre><h3 id="终止进程"><a href="#终止进程" class="headerlink" title="终止进程"></a>终止进程</h3><p>调用exit函数终止进程</p>
+<pre><code>p2: x = 0</code></pre><h2 id="终止进程"><a href="#终止进程" class="headerlink" title="终止进程"></a>终止进程</h2><p>调用exit函数终止进程</p>
 <pre><code>#include &lt;stdlib.h&gt;
 
-void exit(int status);</code></pre><h3 id="回收子进程"><a href="#回收子进程" class="headerlink" title="回收子进程"></a>回收子进程</h3><p>一个进程可以通过调用waitpid函数来等待它的子进程终止或者停止.</p>
+void exit(int status);</code></pre><h2 id="回收子进程"><a href="#回收子进程" class="headerlink" title="回收子进程"></a>回收子进程</h2><p>一个进程可以通过调用waitpid函数来等待它的子进程终止或者停止.</p>
 <pre><code>#include &lt;sys/types.h&gt;
 #include &lt;sys/wait.h&gt;
 
@@ -134,20 +134,20 @@ pid_t waitpid(pid_t pid, int *statusp, int options);</code></pre><p>另外,wait�
 <pre><code>#include &lt;sys/types.h&gt;
 #include &lt;sys/wait.h&gt;
 
-pid_t wait(int *statusp);</code></pre><h3 id="进程休眠"><a href="#进程休眠" class="headerlink" title="进程休眠"></a>进程休眠</h3><p>sleep函数将一个进程挂起一段指定时间:</p>
+pid_t wait(int *statusp);</code></pre><h2 id="进程休眠"><a href="#进程休眠" class="headerlink" title="进程休眠"></a>进程休眠</h2><p>sleep函数将一个进程挂起一段指定时间:</p>
 <pre><code>#include &lt;unistd.h&gt;
 
 unsigned int sleep(unsigned int secs);</code></pre><p>还有一个pause函数,该函数让调用函数休眠,直到该进程收到一个信号.</p>
 <pre><code>#include &lt;unistd.h&gt;
 
-int pause(void);</code></pre><h3 id="加载并运行程序"><a href="#加载并运行程序" class="headerlink" title="加载并运行程序"></a>加载并运行程序</h3><p>execve函数在当前进程的上下文中加载并运行一个新程序.</p>
+int pause(void);</code></pre><h2 id="加载并运行程序"><a href="#加载并运行程序" class="headerlink" title="加载并运行程序"></a>加载并运行程序</h2><p>execve函数在当前进程的上下文中加载并运行一个新程序.</p>
 <pre><code>#include &lt;unistd.h&gt;
 
 int execve(const char *filename, const char *argv[], const char *envp[]);</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/27/进程学习/" data-id="cjxn0u71x000ih4fx3itzqqkk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/27/进程学习/" data-id="cjxograsa000m0zfx7bakkhqu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统编程/">系统编程</a></li></ul>
@@ -221,6 +221,10 @@ int execve(const char *filename, const char *argv[], const char *envp[]);</code>
       <ul>
         
           <li>
+            <a href="/2019/07/04/为什么IP要采用面向无连接/">为什么IP要采用面向无连接</a>
+          </li>
+        
+          <li>
             <a href="/2019/07/03/TCP与UDP的区别/">TCP与UDP的区别</a>
           </li>
         
@@ -234,10 +238,6 @@ int execve(const char *filename, const char *argv[], const char *envp[]);</code>
         
           <li>
             <a href="/2019/06/30/ARP-地址解析协议的工作原理/">ARP:地址解析协议的工作原理</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/29/虚拟地址空间与物理地址空间映射/">虚拟地址空间与物理地址空间映射</a>
           </li>
         
       </ul>

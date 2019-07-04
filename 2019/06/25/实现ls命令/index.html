@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="mkzpd">
 <meta property="og:description" content="概述开始学习Unix/Linux上的系统编程，首先实现一个简易的ls命令.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-26T04:04:48.338Z">
+<meta property="og:updated_time" content="2019-07-04T09:41:34.576Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="实现ls命令">
 <meta name="twitter:description" content="概述开始学习Unix/Linux上的系统编程，首先实现一个简易的ls命令.">
@@ -90,8 +90,8 @@
         <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>开始学习Unix/Linux上的系统编程，首先实现一个简易的ls命令.</p>
 <a id="more"></a>
 
-<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p>stat: 得到文件的属性,头文件: #include &lt;sys/stat.h&gt;, 函数原型:int result = stat(char *fname, struct stat *bufp).<br>opendir: 打开一个目录,头文件:#include &lt;sys/types.h&gt; 和 #include &lt;dirent.h&gt;，函数原型:DIR *opendir(const char *name);<br>readdir: 读一个目录,头文件:#include &lt;dirent.h&gt;,函数原型:struct dirent *readdir(DIR *dirp);<br>closedir: 关闭一个目录,头文件:#include &lt;sys/types.h&gt; 和 #include &lt;dirent.h&gt; 函数原型:int closedir(DIR *dirp);</p>
-<h3 id="ls工作原理"><a href="#ls工作原理" class="headerlink" title="ls工作原理"></a>ls工作原理</h3><pre><code>main()
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>stat: 得到文件的属性,头文件: #include &lt;sys/stat.h&gt;, 函数原型:int result = stat(char *fname, struct stat *bufp).<br>opendir: 打开一个目录,头文件:#include &lt;sys/types.h&gt; 和 #include &lt;dirent.h&gt;，函数原型:DIR *opendir(const char *name);<br>readdir: 读一个目录,头文件:#include &lt;dirent.h&gt;,函数原型:struct dirent *readdir(DIR *dirp);<br>closedir: 关闭一个目录,头文件:#include &lt;sys/types.h&gt; 和 #include &lt;dirent.h&gt; 函数原型:int closedir(DIR *dirp);</p>
+<h2 id="ls工作原理"><a href="#ls工作原理" class="headerlink" title="ls工作原理"></a>ls工作原理</h2><pre><code>main()
     opendir(char *)
        create a connection
        return a DIR *
@@ -100,7 +100,7 @@
        return a pointer to
        a struct dirent
     closedir(DIR *)
-       close a connection</code></pre><h3 id="简易ls代码实现"><a href="#简易ls代码实现" class="headerlink" title="简易ls代码实现"></a>简易ls代码实现</h3><pre><code>/* ls2.c
+       close a connection</code></pre><h2 id="简易ls代码实现"><a href="#简易ls代码实现" class="headerlink" title="简易ls代码实现"></a>简易ls代码实现</h2><pre><code>/* ls2.c
  *    purpose  list contents of directory or directories
  *    action   if no args, use .  else list files in args
  *    note     uses stat and pwd.h and grp.h 
@@ -252,7 +252,7 @@ char *gid_to_name( gid_t gid )
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/25/实现ls命令/" data-id="cjxn0u71f000ch4fx1emqgiyv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/06/25/实现ls命令/" data-id="cjxograrm000f0zfxd97qlf9f" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统编程/">系统编程</a></li></ul>
@@ -326,6 +326,10 @@ char *gid_to_name( gid_t gid )
       <ul>
         
           <li>
+            <a href="/2019/07/04/为什么IP要采用面向无连接/">为什么IP要采用面向无连接</a>
+          </li>
+        
+          <li>
             <a href="/2019/07/03/TCP与UDP的区别/">TCP与UDP的区别</a>
           </li>
         
@@ -339,10 +343,6 @@ char *gid_to_name( gid_t gid )
         
           <li>
             <a href="/2019/06/30/ARP-地址解析协议的工作原理/">ARP:地址解析协议的工作原理</a>
-          </li>
-        
-          <li>
-            <a href="/2019/06/29/虚拟地址空间与物理地址空间映射/">虚拟地址空间与物理地址空间映射</a>
           </li>
         
       </ul>
