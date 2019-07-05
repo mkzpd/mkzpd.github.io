@@ -5,15 +5,20 @@
   
 
   
-  <title>Archives: 2019/6 | mkzpd</title>
+  <title>IP地址与路由控制 | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="mkzpd">
-<meta property="og:url" content="http://yoursite.com/archives/2019/06/index.html">
+  <meta name="description" content="概述IP地址的网络地址部分用于进行路由控制.">
+<meta name="keywords" content="TCP&#x2F;IP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IP地址与路由控制">
+<meta property="og:url" content="http://yoursite.com/2019/07/05/IP地址与路由控制/index.html">
 <meta property="og:site_name" content="mkzpd">
+<meta property="og:description" content="概述IP地址的网络地址部分用于进行路由控制.">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-07-05T01:46:28.936Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mkzpd">
+<meta name="twitter:title" content="IP地址与路由控制">
+<meta name="twitter:description" content="概述IP地址的网络地址部分用于进行路由控制.">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -60,173 +65,59 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/30/ARP-地址解析协议的工作原理/" class="archive-article-date">
-  <time datetime="2019-06-30T09:47:12.000Z" itemprop="datePublished">Jun 30</time>
+        <section id="main"><article id="post-IP地址与路由控制" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/05/IP地址与路由控制/" class="article-date">
+  <time datetime="2019-07-05T01:23:25.000Z" itemprop="datePublished">2019-07-05</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/30/ARP-地址解析协议的工作原理/">ARP:地址解析协议的工作原理</a>
+    <h1 class="article-title" itemprop="name">
+      IP地址与路由控制
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/29/虚拟地址空间与物理地址空间映射/" class="archive-article-date">
-  <time datetime="2019-06-29T10:04:28.000Z" itemprop="datePublished">Jun 29</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/29/虚拟地址空间与物理地址空间映射/">虚拟地址空间与物理地址空间映射</a>
-    </h1>
-  
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><font color="red"><b>IP地址</b></font>的<font color="red"><b>网络地址部分</b></font>用于进行路由控制.</p>
+<a id="more"></a>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/28/为什么说TCP提供可靠的传输服务/" class="archive-article-date">
-  <time datetime="2019-06-28T07:36:27.000Z" itemprop="datePublished">Jun 28</time>
-</a>
+<h2 id="详细解释"><a href="#详细解释" class="headerlink" title="详细解释"></a>详细解释</h2><p>发送数据包时所使用的地址是网络层的地址,即IP地址.然而仅仅有IP地址还不足以实现将数据包发送到对端目标地址,<br>在数据发送过程中还需要类似于”指明路由器或主机”的信息,以便真正发往目标地址.保存这种信息的就是路由控制表.<br>实现IP通信的主机和路由器都必须持有一张这样的表.它们也正是在这个表格的基础上得以进行数据包发送的.</p>
+<p>路由控制表中记录着网络地址与下一步应该发送至路由器的地址.在发送IP包时,首先要确定IP包首部中的目标地址,<br>再从路由控制表中找到与该地址具有相同网络地址的记录,根据该记录将IP包转发给相应的下一个路由器.如果路由控<br>制表中存在多条相同网络地址的记录,就选择一个最为吻合的网络地址.所谓最为吻合是指相同位数最多的意思(也叫最<br>长匹配)</p>
+<p>例如172.20.100.52的网络地址与172.20/16和172.20.100/24两项都匹配.此时,应该选择匹配度最长的172.20.100/24.<br>此外,如果路由表中下一个路由器的位置记录着某个主机或路由器网卡的IP地址,那就意味着”发送的目标地址属于同<br>一个链路”.</p>
+
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/28/为什么说TCP提供可靠的传输服务/">为什么说TCP提供可靠的传输服务</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/27/进程学习/" class="archive-article-date">
-  <time datetime="2019-06-27T02:06:07.000Z" itemprop="datePublished">Jun 27</time>
-</a>
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/05/IP地址与路由控制/" data-id="cjxpfnncn0000kmfxw1b0lp9h" class="article-share-link">Share</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/27/进程学习/">进程学习</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/26/IP地址与点分十进制串的相互转换/" class="archive-article-date">
-  <time datetime="2019-06-26T03:38:05.000Z" itemprop="datePublished">Jun 26</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/26/IP地址与点分十进制串的相互转换/">IP地址与点分十进制串的相互转换</a>
-    </h1>
-  
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
 
-    </header>
+    </footer>
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/25/实现ls命令/" class="archive-article-date">
-  <time datetime="2019-06-25T00:46:30.000Z" itemprop="datePublished">Jun 25</time>
-</a>
-      
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/25/实现ls命令/">实现ls命令</a>
-    </h1>
   
+    <a href="/2019/07/04/为什么IP要采用面向无连接/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">为什么IP要采用面向无连接</div>
+    </a>
+  
+</nav>
 
-    </header>
-  </div>
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/19/字节顺序/" class="archive-article-date">
-  <time datetime="2019-06-19T01:23:48.000Z" itemprop="datePublished">Jun 19</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/19/字节顺序/">字节顺序</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/18/博客搭建/" class="archive-article-date">
-  <time datetime="2019-06-18T11:47:32.000Z" itemprop="datePublished">Jun 18</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/18/博客搭建/">博客搭建</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
 
 </section>
         
