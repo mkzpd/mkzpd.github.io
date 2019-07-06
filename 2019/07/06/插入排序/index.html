@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>插入排序 | mkzpd</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述对于少量元素的排序,插入排序是一个有效的算法.对于元素的排序,使用插入排序就像排序手中的扑克牌一样.">
+<meta name="keywords" content="算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="插入排序">
+<meta property="og:url" content="http://yoursite.com/2019/07/06/插入排序/index.html">
+<meta property="og:site_name" content="mkzpd">
+<meta property="og:description" content="概述对于少量元素的排序,插入排序是一个有效的算法.对于元素的排序,使用插入排序就像排序手中的扑克牌一样.">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-07-06T10:33:57.032Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="插入排序">
+<meta name="twitter:description" content="概述对于少量元素的排序,插入排序是一个有效的算法.对于元素的排序,使用插入排序就像排序手中的扑克牌一样.">
+  
+    <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">mkzpd</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-插入排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/06/插入排序/" class="article-date">
+  <time datetime="2019-07-06T10:10:51.000Z" itemprop="datePublished">2019-07-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      插入排序
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>对于少量元素的排序,插入排序是一个有效的算法.对于元素的排序,使用插入排序就像排序手中的扑克牌一样.</p>
+<a id="more"></a>
+
+<h2 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">INSERTION-SORT(A)</span><br><span class="line">for j = 2 to A.length</span><br><span class="line">    key = A[j]</span><br><span class="line">    // Insert A[j] into the sorted sequence A[1..j-1].</span><br><span class="line">    i = j - 1</span><br><span class="line">    while i &gt; 0 and A[i] &gt; key</span><br><span class="line">        A[i+1] = A[i]</span><br><span class="line">        i = i - 1</span><br><span class="line">    A[i + 1] = key</span><br></pre></td></tr></table></figure>
+
+<h2 id="循环不变式"><a href="#循环不变式" class="headerlink" title="循环不变式"></a>循环不变式</h2><p>初始化: 循环的第一次迭代之前,它为真.<br>保持: 如果循环的某次迭代之前它为真,那么下次迭代之前它仍为真.<br>终止: 在循环终止时,不变式为我们提供了一个有用的性质,该性质有助于证明算法是正确的.</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">/* a file named insertion-sort.c  */</span><br><span class="line"></span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">void insertionSort(int *a,int num);</span><br><span class="line">void printNum(int *a,int num);</span><br><span class="line"></span><br><span class="line">void printNum(int *a,int num)</span><br><span class="line">&#123;</span><br><span class="line">    int i;</span><br><span class="line">    for(i = 0; i &lt; num; i++)&#123;</span><br><span class="line">        printf(&quot;%d &quot;,a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void insertionSort(int *a,int num)</span><br><span class="line">&#123;</span><br><span class="line">    int i, j, key;</span><br><span class="line">    for(j = 1; j &lt; num; j++)&#123;</span><br><span class="line">        key = a[j];</span><br><span class="line">        i = j - 1;</span><br><span class="line">        while(i &gt;= 0 &amp;&amp; a[i] &gt; key)&#123;</span><br><span class="line">            a[i + 1] = a[i];</span><br><span class="line">            i = i - 1;</span><br><span class="line">        &#125;</span><br><span class="line">        a[i+1]=key;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int n;</span><br><span class="line">    int a[]=&#123;5,2,4,6,1,3&#125;;</span><br><span class="line">    n = sizeof(a) / sizeof(a[0]);</span><br><span class="line"></span><br><span class="line">    printf(&quot;insertion sort before: &quot;);</span><br><span class="line">    printNum(a,n);</span><br><span class="line"></span><br><span class="line">    insertionSort(a,n);</span><br><span class="line"></span><br><span class="line">    printf(&quot;insertion sort after: &quot;);</span><br><span class="line">    printNum(a,n);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译并运行:</p>
+<pre><font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../test-code</b></font>$ gcc -g -o insertion-sort insertion-sort.c
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../test-code</b></font>$ ./insertion-sort
+insertion sort before: 5 2 4 6 1 3
+insertion sort after: 1 2 3 4 5 6
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../test-code</b></font>$
+</pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/06/插入排序/" data-id="cjxre4hjh000e75fxp8ucgg7s" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/07/05/IP地址与路由控制/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">IP地址与路由控制</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统编程/">系统编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/TCP-IP/" style="font-size: 20px;">TCP/IP</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/系统编程/" style="font-size: 20px;">系统编程</a> <a href="/tags/网络编程/" style="font-size: 15px;">网络编程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/06/插入排序/">插入排序</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/05/IP地址与路由控制/">IP地址与路由控制</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/04/为什么IP要采用面向无连接/">为什么IP要采用面向无连接</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/03/TCP与UDP的区别/">TCP与UDP的区别</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/02/循环创建N个子进程/">循环创建N个子进程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 mkzpd<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
