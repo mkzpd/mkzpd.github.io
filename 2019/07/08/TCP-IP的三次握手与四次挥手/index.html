@@ -5,20 +5,20 @@
   
 
   
-  <title>IP地址与路由控制 | mkzpd</title>
+  <title>TCP/IP的三次握手与四次挥手 | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="概述IP地址的网络地址部分用于进行路由控制.">
+  <meta name="description" content="概述整理记录一些TCP/IP的三次握手与四次挥手的知识.">
 <meta name="keywords" content="TCP&#x2F;IP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="IP地址与路由控制">
-<meta property="og:url" content="http://yoursite.com/2019/07/05/IP地址与路由控制/index.html">
+<meta property="og:title" content="TCP&#x2F;IP的三次握手与四次挥手">
+<meta property="og:url" content="http://yoursite.com/2019/07/08/TCP-IP的三次握手与四次挥手/index.html">
 <meta property="og:site_name" content="mkzpd">
-<meta property="og:description" content="概述IP地址的网络地址部分用于进行路由控制.">
+<meta property="og:description" content="概述整理记录一些TCP/IP的三次握手与四次挥手的知识.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-05T01:46:28.936Z">
+<meta property="og:updated_time" content="2019-07-08T10:16:44.246Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="IP地址与路由控制">
-<meta name="twitter:description" content="概述IP地址的网络地址部分用于进行路由控制.">
+<meta name="twitter:title" content="TCP&#x2F;IP的三次握手与四次挥手">
+<meta name="twitter:description" content="概述整理记录一些TCP/IP的三次握手与四次挥手的知识.">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -65,10 +65,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-IP地址与路由控制" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-TCP-IP的三次握手与四次挥手" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/07/05/IP地址与路由控制/" class="article-date">
-  <time datetime="2019-07-05T01:23:25.000Z" itemprop="datePublished">2019-07-05</time>
+    <a href="/2019/07/08/TCP-IP的三次握手与四次挥手/" class="article-date">
+  <time datetime="2019-07-08T10:05:02.000Z" itemprop="datePublished">2019-07-08</time>
 </a>
     
   </div>
@@ -79,7 +79,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      IP地址与路由控制
+      TCP/IP的三次握手与四次挥手
     </h1>
   
 
@@ -87,17 +87,28 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><font color="red"><b>IP地址</b></font>的<font color="red"><b>网络地址部分</b></font>用于进行路由控制.</p>
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>整理记录一些TCP/IP的三次握手与四次挥手的知识.</p>
 <a id="more"></a>
 
-<h2 id="详细解释"><a href="#详细解释" class="headerlink" title="详细解释"></a>详细解释</h2><p>发送数据包时所使用的地址是网络层的地址,即IP地址.然而仅仅有IP地址还不足以实现将数据包发送到对端目标地址,<br>在数据发送过程中还需要类似于”指明路由器或主机”的信息,以便真正发往目标地址.保存这种信息的就是路由控制表.<br>实现IP通信的主机和路由器都必须持有一张这样的表.它们也正是在这个表格的基础上得以进行数据包发送的.</p>
-<p>路由控制表中记录着网络地址与下一步应该发送至路由器的地址.在发送IP包时,首先要确定IP包首部中的目标地址,<br>再从路由控制表中找到与该地址具有相同网络地址的记录,根据该记录将IP包转发给相应的下一个路由器.如果路由控<br>制表中存在多条相同网络地址的记录,就选择一个最为吻合的网络地址.所谓最为吻合是指相同位数最多的意思(也叫最<br>长匹配)</p>
-<p>例如172.20.100.52的网络地址与172.20/16和172.20.100/24两项都匹配.此时,应该选择匹配度最长的172.20.100/24.<br>此外,如果路由表中下一个路由器的位置记录着某个主机或路由器网卡的IP地址,那就意味着”发送的目标地址属于同<br>一个链路”.</p>
+<h2 id="三次握手的描述"><a href="#三次握手的描述" class="headerlink" title="三次握手的描述"></a>三次握手的描述</h2><p><img src alt="三次握手"></p>
+<ol>
+<li>为了方便描述我们将主动发起请求的172.16.50.72:65076 主机称为客户端,将返回数据的主机172.16.17.94:8080称为服务器.</li>
+<li>第一次握手: 建立连接.客户端发送连接请求,发送SYN报文,将seq设置为0.然后客户端进入SYN_SEND状态,等待服务器的确认.</li>
+<li>第二次握手: 服务器收到客户端的SYN报文段.需要对这个SYN报文段进行确认,发送ACK报文,将ack设置为1.同时,自己还要<br>发送SYN请求信息,将seq为0.服务器端将上述所有信息一并发送给客户端,此时服务器进入SYN_RECV状态.</li>
+<li>第三次握手: 客户端收到服务器的ACK和SYN报文后,进行确认,然后将ack设置为1,seq设置为1,向服务器发送ACK报文段,这个<br>报文段发送完毕以后,客户端和服务器端都进入ESTABLISHED状态,完成TCP三次握手.</li>
+</ol>
+<h2 id="四次挥手的描述"><a href="#四次挥手的描述" class="headerlink" title="四次挥手的描述"></a>四次挥手的描述</h2><p><img src alt="四次挥手"></p>
+<ol>
+<li>第一次挥手: 客户端向服务器发送一个FIN报文段,将设置seq为160和ack为112,此时客户端进入FIN_WAIT_1状态,这表示客户端<br>没有数据要发送服务器了,请求关闭连接.</li>
+<li>第二次挥手: 服务器收到了客户端发送的FIN报文段,向客户端回一个ACK报文段,ack设置为1,seq设置为112;服务器<br>进入了CLOSE_WAIT状态,客户端收到服务器返回的ACK报文后,进入FIN_WAIT_2状态.</li>
+<li>第三次挥手: 服务器会观察自己是否还有数据没有发送给客户端,如果有,先把数据发送给客户端,再发送FIN报文.如果没有,<br>那么服务器直接发送FIN报文给客户端.请求关闭连接,同时服务器进入LAST_ACK状态.</li>
+<li>第四次挥手:客户端收到服务器发送的FIN报文段,向服务器发送ACK报文段,将seq设置为161,将ack设置为113,然后客户端<br>进入TIME_WAIT状态;服务器收到客户端的ACK报文段以后,就关闭连接;此时,客户端等待2MSL后依然没有收到回复,则证明Server端<br>已正常关闭,客户端也可以关闭连接了.</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/05/IP地址与路由控制/" data-id="cjxu8ct8o0011j3fxnccxz1ew" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/08/TCP-IP的三次握手与四次挥手/" data-id="cjxu8ct280000j3fxfdj0vtn2" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
@@ -108,19 +119,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/07/06/插入排序/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          插入排序
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/07/04/为什么IP要采用面向无连接/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/07/07/leetcode-第1题-two-sum/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">为什么IP要采用面向无连接</div>
+      <div class="article-nav-title">leetcode 第1题 two sum</div>
     </a>
   
 </nav>
