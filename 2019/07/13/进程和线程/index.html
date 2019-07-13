@@ -5,20 +5,20 @@
   
 
   
-  <title>博客搭建 | mkzpd</title>
+  <title>进程和线程 | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="个人博客搭建成功，可以写属于自己的博客了，用来记录自己学习，生活，成长的过程。 Hello World!">
-<meta name="keywords" content="博客搭建">
+  <meta name="description" content="概述进程和线程是操作系统的基本概念,计算机的核心是CPU,它承担了所有的计算机任务.它就像一座工厂,时刻在运行.">
+<meta name="keywords" content="系统编程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="博客搭建">
-<meta property="og:url" content="http://yoursite.com/2019/06/18/博客搭建/index.html">
+<meta property="og:title" content="进程和线程">
+<meta property="og:url" content="http://yoursite.com/2019/07/13/进程和线程/index.html">
 <meta property="og:site_name" content="mkzpd">
-<meta property="og:description" content="个人博客搭建成功，可以写属于自己的博客了，用来记录自己学习，生活，成长的过程。 Hello World!">
+<meta property="og:description" content="概述进程和线程是操作系统的基本概念,计算机的核心是CPU,它承担了所有的计算机任务.它就像一座工厂,时刻在运行.">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-18T11:49:05.473Z">
+<meta property="og:updated_time" content="2019-07-13T02:18:50.068Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="博客搭建">
-<meta name="twitter:description" content="个人博客搭建成功，可以写属于自己的博客了，用来记录自己学习，生活，成长的过程。 Hello World!">
+<meta name="twitter:title" content="进程和线程">
+<meta name="twitter:description" content="概述进程和线程是操作系统的基本概念,计算机的核心是CPU,它承担了所有的计算机任务.它就像一座工厂,时刻在运行.">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -65,10 +65,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-博客搭建" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-进程和线程" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/06/18/博客搭建/" class="article-date">
-  <time datetime="2019-06-18T11:47:32.000Z" itemprop="datePublished">2019-06-18</time>
+    <a href="/2019/07/13/进程和线程/" class="article-date">
+  <time datetime="2019-07-13T01:32:32.000Z" itemprop="datePublished">2019-07-13</time>
 </a>
     
   </div>
@@ -79,7 +79,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      博客搭建
+      进程和线程
     </h1>
   
 
@@ -87,16 +87,28 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>个人博客搭建成功，可以写属于自己的博客了，用来记录自己学习，生活，成长的过程。</p>
-<p>Hello World!</p>
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>进程和线程是操作系统的基本概念,计算机的核心是CPU,它承担了所有的计算机任务.它就像一座工厂,时刻在运行.</p>
+<a id="more"></a>
+
+<h2 id="详细解释"><a href="#详细解释" class="headerlink" title="详细解释"></a>详细解释</h2><p>现代操作系统基本都支持多任务.即操作系统可以同时运行多个任务,也就是说你一边在用浏览器上网,一边在听MP3,<br>一边在用Word赶作业,这就是多任务,至少同时有3个任务正在运行.还有很多任务悄悄地在后台同时运行着.只是桌面上没有显示而已.</p>
+<p>现在,多核CPU已经非常普及了,但是,即使过去的单核CPU,也可以执行多任务.由于CPU执行代码都是顺序执行的,那么,单核CPU是怎么执行多任务的呢?<br>实现办法就是操作系统轮流让各个任务交替执行,任务1执行0.01秒,切换到任务2,任务2执行0.01秒,再切换到任务3,执行0.01秒……这样反复执行下去.<br>表面上看,每个任务都是交替执行的,但是,由于CPU的执行速度实在是太快了,我们感觉就像所有任务都在同时执行一样.</p>
+<p>真正的并行执行多任务只能在多核CPU上实现,但是,由于任务数量远远多于CPU的核心数量,所以,操作系统也会自动把很多任务轮流调度到每个核心上执行.<br>对于操作系统来说,一个任务就是一个进程(Process),比如打开一个浏览器就是启动一个浏览器进程,打开一个记事本就启动了一个记事本进程.<br>打开两个记事本就启动了两个记事本进程,打开一个Word就启动了一个Word进程.</p>
+<p><font color="red"><b>有些进程还不止同时干一件事,比如Word,它可以同时进行打字,拼写检查,打印等事情.在一个进程内部,要同时干多件事,就需要同时<br>运行多个”子任务”,我们把进程内的这些“子任务”称为线程(Thread)</b></font>.</p>
+<p>由于每个进程至少要干一件事,所以,一个进程至少有一个线程.当然,像Word这种复杂的进程可以有多个线程,多个线程可以同时执行,多线程的执行方式<br>和多进程是一样的,也是由操作系统在多个线程之间快速切换,让每个线程都短暂地交替运行,看起来就像同时执行一样.当然,真正地同时执行多线程需要<br>多核CPU才可能实现.</p>
+<p>如果一个程序要执行多个任务可以有以下几种方案:</p>
+<ol>
+<li>启动多个进程,每个进程虽然只有一个线程,但多个进程可以一块执行多个任务.    即多进程模式.</li>
+<li>启动一个进程,在一个进程内启动多个线程,这样，多个线程也可以一块执行多个任务.    即多线程模式.</li>
+<li>启动多个进程,每个进程再启动多个线程,这样同时执行的任务就更多了,当然这种模型更复杂,实际很少采用.    即多进程+多线程模式.</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/06/18/博客搭建/" data-id="cjy0wgkbx000ib3fxfda4429e" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/13/进程和线程/" data-id="cjy0wgkcs000vb3fxog5xl7wk" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/博客搭建/">博客搭建</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统编程/">系统编程</a></li></ul>
 
     </footer>
   </div>
@@ -104,15 +116,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/06/19/字节顺序/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          字节顺序
-        
-      </div>
-    </a>
   
+    <a href="/2019/07/12/leetcode-第5题-Longest-Palindromic-Substring/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">leetcode 第5题 Longest Palindromic Substring </div>
+    </a>
   
 </nav>
 
