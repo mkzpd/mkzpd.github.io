@@ -5,20 +5,20 @@
   
 
   
-  <title>为什么IP要采用面向无连接 | mkzpd</title>
+  <title>ping IP后敲回车,发包前会发生什么 | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="概述面向无连接型包括以太网,IP,UDP等协议.面向有连接型包括ATM,帧中继,TCP等协议.">
+  <meta name="description" content="概述考察TCP/IP细节知识">
 <meta name="keywords" content="TCP&#x2F;IP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="为什么IP要采用面向无连接">
-<meta property="og:url" content="http://yoursite.com/2019/07/04/为什么IP要采用面向无连接/index.html">
+<meta property="og:title" content="ping IP后敲回车,发包前会发生什么">
+<meta property="og:url" content="http://yoursite.com/2019/07/16/ping-IP后敲回车-发包前会发生什么/index.html">
 <meta property="og:site_name" content="mkzpd">
-<meta property="og:description" content="概述面向无连接型包括以太网,IP,UDP等协议.面向有连接型包括ATM,帧中继,TCP等协议.">
+<meta property="og:description" content="概述考察TCP/IP细节知识">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-04T09:24:22.558Z">
+<meta property="og:updated_time" content="2019-07-16T01:23:01.771Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="为什么IP要采用面向无连接">
-<meta name="twitter:description" content="概述面向无连接型包括以太网,IP,UDP等协议.面向有连接型包括ATM,帧中继,TCP等协议.">
+<meta name="twitter:title" content="ping IP后敲回车,发包前会发生什么">
+<meta name="twitter:description" content="概述考察TCP/IP细节知识">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -65,10 +65,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-为什么IP要采用面向无连接" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-ping-IP后敲回车-发包前会发生什么" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/07/04/为什么IP要采用面向无连接/" class="article-date">
-  <time datetime="2019-07-04T09:02:55.000Z" itemprop="datePublished">2019-07-04</time>
+    <a href="/2019/07/16/ping-IP后敲回车-发包前会发生什么/" class="article-date">
+  <time datetime="2019-07-16T01:20:37.000Z" itemprop="datePublished">2019-07-16</time>
 </a>
     
   </div>
@@ -79,7 +79,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      为什么IP要采用面向无连接
+      ping IP后敲回车,发包前会发生什么
     </h1>
   
 
@@ -87,19 +87,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>面向无连接型包括以太网,IP,UDP等协议.<br>面向有连接型包括ATM,帧中继,TCP等协议.</p>
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>考察TCP/IP细节知识</p>
 <a id="more"></a>
 
-<h2 id="详细解释"><a href="#详细解释" class="headerlink" title="详细解释"></a>详细解释</h2><p>IP面向无连接.即在发包之前,不需要建立与对端目标地址之间连接.上层如果遇到需要发送给IP的数据,该数据会立即被<br>压缩成IP包发送出去.</p>
-<p>在面向有连接的情况下,需要事先建立连接.如果对端主机关机或不存在,也就不可能建立连接.反之,一个没有建立连接<br>的主机也不可能发送数据过来.</p>
-<p>而面向无连接的情况则不同.即使对端主机关机或不存在,数据包还是会被发送出去.反之,对于一台主机来说,它会何时从<br>哪里收到数据也是不得而知的.通常应该进行网络监控,让主机只接受发给自己的数据包.若没有做好准备很有可能会错过<br>一些该收的包.因此,在面向无连接的方式下可能会有很多冗余的通信.</p>
-<p>那么,为什么IP要采用面向无连接呢?</p>
-<p>主要有两点原因:一是为了简化,二是为了提速.面向连接比起面向无连接处理相对复杂.甚至管理每个连接本身就是一个<br>相当繁琐的事情.此外,每次通信之前都要事先建立连接,又会降低处理速度.需要有连接时,可以委托上一层提供此服务.<br>因此,IP为了实现简单化与高速化采用面向无连接的方式.</p>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>首先根据目的IP和路由表决定走哪个网卡,再根据网卡的子网掩码地址判断目的IP是否在子网内.如果不在则会通过arp缓存查询IP的网卡地址,<br>不存在的话会通过广播询问目的IP的mac地址,得到后就开始发包了,同时mac地址也会被arp缓存起来.    </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/04/为什么IP要采用面向无连接/" data-id="cjy54unxm0011mtfxfsk6w3pm" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/16/ping-IP后敲回车-发包前会发生什么/" data-id="cjy54unul000amtfx8gnxhudc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
@@ -110,19 +106,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/07/05/IP地址与路由控制/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          IP地址与路由控制
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/07/03/TCP与UDP的区别/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/07/13/进程和线程/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">TCP与UDP的区别</div>
+      <div class="article-nav-title">进程和线程</div>
     </a>
   
 </nav>
