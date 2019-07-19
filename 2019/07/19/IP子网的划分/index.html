@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>IP子网的划分 | mkzpd</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述为了便于寻址以及层次化构造网络，每个 IP 地址可被看作是分为两部分，即 网络号 和 主机号 。同一个区域的所有主机有相同的网络号(即 IP 地址的前半部分相同)，区域内的每个主机（包括路由器）都有一个主机号与其对应。">
+<meta name="keywords" content="TCP&#x2F;IP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IP子网的划分">
+<meta property="og:url" content="http://yoursite.com/2019/07/19/IP子网的划分/index.html">
+<meta property="og:site_name" content="mkzpd">
+<meta property="og:description" content="概述为了便于寻址以及层次化构造网络，每个 IP 地址可被看作是分为两部分，即 网络号 和 主机号 。同一个区域的所有主机有相同的网络号(即 IP 地址的前半部分相同)，区域内的每个主机（包括路由器）都有一个主机号与其对应。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/picture4.png">
+<meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/picture5.png">
+<meta property="og:updated_time" content="2019-07-19T06:46:00.884Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IP子网的划分">
+<meta name="twitter:description" content="概述为了便于寻址以及层次化构造网络，每个 IP 地址可被看作是分为两部分，即 网络号 和 主机号 。同一个区域的所有主机有相同的网络号(即 IP 地址的前半部分相同)，区域内的每个主机（包括路由器）都有一个主机号与其对应。">
+<meta name="twitter:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/picture4.png">
+  
+    <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">mkzpd</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-IP子网的划分" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/19/IP子网的划分/" class="article-date">
+  <time datetime="2019-07-19T06:02:57.000Z" itemprop="datePublished">2019-07-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      IP子网的划分
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>为了便于寻址以及层次化构造网络，每个 IP 地址可被看作是分为两部分，即 网络号 和 主机号 。同一个区域的所有主机有相同的<br>网络号(即 IP 地址的前半部分相同)，区域内的每个主机（包括路由器）都有一个主机号与其对应。</p>
+<a id="more"></a>
+
+<h2 id="IP地址的分类"><a href="#IP地址的分类" class="headerlink" title="IP地址的分类"></a>IP地址的分类</h2><p>IP 地址被分为 A、B、C、D、E 五类：</p>
+<ol>
+<li>A 类给大型网络或政府机构等</li>
+<li>B 类分配给中型网络、跨国企业等</li>
+<li>C 类分配给小型网络</li>
+<li>D 类用于多播</li>
+<li>E 类用于实验</li>
+</ol>
+<p>各类可容纳的地址数目不同，其中我们最常见的为 A、B、C 这三类。</p>
+<p>IP 地址用 32 位二进制数字表示的时候，A、B、C 类 IP 的网络号长度分别为 8 位、16 位、24 位：</p>
+<p><img src="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/picture4.png" alt="IP地址分类"></p>
+<p>A 类地址:</p>
+<ul>
+<li>A 类地址网络号范围：1.0.0.0—127.0.0.0</li>
+</ul>
+<ul>
+<li>A 类 IP 地址范围：1.0.0.0—127.255.255.255</li>
+</ul>
+<ul>
+<li>A 类 IP 的私有地址范围：10.0.0.0—10.255.255.255 （所谓的私有地址就是在互联网上不使用，而被用在局域网络中的地址）</li>
+</ul>
+<ul>
+<li>127.X.X.X 是保留地址，用做循环测试用的</li>
+</ul>
+<ul>
+<li>因为主机号有 24 位，所以一个 A 类网络号可以容纳 2^24-2=16777214 个主机号</li>
+</ul>
+<p>B 类地址:</p>
+<ul>
+<li>B 类地址网络号范围：128.0.0.0—191.255.0.0</li>
+</ul>
+<ul>
+<li>B 类 IP 地址范围：128.0.0.0—191.255.255.255</li>
+</ul>
+<ul>
+<li>B 类 IP 的私有地址范围：172.16.0.0—172.31.255.255</li>
+</ul>
+<ul>
+<li>169.254.X.X 是保留地址；191.255.255.255 是广播地址</li>
+</ul>
+<ul>
+<li>因为主机号有 16 位，所以一个 B 类网络号可以容纳 2^16-2=65534 个主机号</li>
+</ul>
+<p>C 类地址:</p>
+<ul>
+<li>C 类地址网络号范围：192.0.0.0—223.255.255.0</li>
+</ul>
+<ul>
+<li>C 类 IP 地址范围：192.0.0.0—223.255.255.255</li>
+</ul>
+<ul>
+<li>C 类 IP 的私有地址范围：192.168.0.0—192.168.255.255</li>
+</ul>
+<ul>
+<li>因为主机号有 8 位，所以一个 C 类网络号可以容纳 2^8-2=254 个主机号</li>
+</ul>
+<h2 id="子网划分"><a href="#子网划分" class="headerlink" title="子网划分"></a>子网划分</h2><p>IP 地址如果只使用 ABCDE 类来划分，会造成大量的浪费：一个有 500 台主机的网络，无法使用 C 类地址。<br>但如果使用一个 B 类地址，6 万多个主机地址只有 500 个被使用，造成 IP 地址的大量浪费.</p>
+<p>因此，可以在 ABC 类网络的基础上，进一步划分子网：占用主机号的前几个位，用于表示子网号.</p>
+<p>这样 IP 地址就可看作 IP = 网络号 + 子网号 + 主机号.</p>
+<p>子网号的位数没有硬性规定，于是我们用 子网掩码 来确定一个 IP 地址中哪几位是主机号，具体使用方法如图:</p>
+<p><img src="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/picture5.png" alt="子网划分"></p>
+<p>子网掩码中的 1 标识了 IP 地址中相应的网络号和子网号，0 标识了主机号。将 IP 地址和子网掩码进行 逻辑与运算 ，结果就能区分网络号和子网号.</p>
+<p>在Linux系统上可以使用 ifconfig 命令来查看本机 ip 和 子网掩码.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/19/IP子网的划分/" data-id="cjy9qls0500003bfxi1atp1dp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/07/16/ping-IP后敲回车-发包前会发生什么/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ping IP后敲回车,发包前会发生什么</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统编程/">系统编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Leetcode/" style="font-size: 15px;">Leetcode</a> <a href="/tags/TCP-IP/" style="font-size: 20px;">TCP/IP</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/系统编程/" style="font-size: 17.5px;">系统编程</a> <a href="/tags/网络编程/" style="font-size: 12.5px;">网络编程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/19/IP子网的划分/">IP子网的划分</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/16/ping-IP后敲回车-发包前会发生什么/">ping IP后敲回车,发包前会发生什么</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/13/进程和线程/">进程和线程</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/12/leetcode-第5题-Longest-Palindromic-Substring/">leetcode 第5题 Longest Palindromic Substring </a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/10/leetcode-第3题-Longest-Substring-Without-Repeating-Characters/">leetcode 第3题 Longest Substring Without Repeating Characters</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 mkzpd<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
