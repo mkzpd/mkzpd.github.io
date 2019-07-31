@@ -7,18 +7,18 @@
   
   <title>典型的并发服务器程序轮廓 | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="概述一种典型的并发服务器程序轮廓，利用的是多进程实现.">
+  <meta name="description" content="概述一种典型的并发服务器程序轮廓，利用的是多进程实现。当然还可以基于I/O多路复用，多进程方法实现并发服务器。">
 <meta name="keywords" content="网络编程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="典型的并发服务器程序轮廓">
 <meta property="og:url" content="http://yoursite.com/2019/07/22/典型的并发服务器程序轮廓/index.html">
 <meta property="og:site_name" content="mkzpd">
-<meta property="og:description" content="概述一种典型的并发服务器程序轮廓，利用的是多进程实现.">
+<meta property="og:description" content="概述一种典型的并发服务器程序轮廓，利用的是多进程实现。当然还可以基于I/O多路复用，多进程方法实现并发服务器。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-22T04:13:20.949Z">
+<meta property="og:updated_time" content="2019-07-31T09:43:30.340Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="典型的并发服务器程序轮廓">
-<meta name="twitter:description" content="概述一种典型的并发服务器程序轮廓，利用的是多进程实现.">
+<meta name="twitter:description" content="概述一种典型的并发服务器程序轮廓，利用的是多进程实现。当然还可以基于I/O多路复用，多进程方法实现并发服务器。">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -87,16 +87,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>一种典型的并发服务器程序轮廓，利用的是多进程实现.</p>
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>一种典型的并发服务器程序轮廓，利用的是多进程实现。当然还可以基于I/O多路复用，多进程方法实现并发服务器。</p>
 <a id="more"></a>
 
 <h2 id="代码实现简要的轮廓"><a href="#代码实现简要的轮廓" class="headerlink" title="代码实现简要的轮廓"></a>代码实现简要的轮廓</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">pid_t pid;</span><br><span class="line">int listenfd, connfd;</span><br><span class="line"></span><br><span class="line">listenfd = Socket(...);</span><br><span class="line"></span><br><span class="line">    /* fill in sockaddr_in&#123;&#125; with server&apos;s well-known port  */</span><br><span class="line">Bind(listenfd, ...);</span><br><span class="line">Listen(listenfd, LISTENQ);</span><br><span class="line"></span><br><span class="line">for(; ; )&#123;</span><br><span class="line">    connfd = Accept(listenfd, ...);      /* probably blocks  */</span><br><span class="line"></span><br><span class="line">    if( (pid = Fork()) == 0 )&#123;</span><br><span class="line">        Close(listenfd);                 /* child closes listening socket  */</span><br><span class="line">        do_it(connfd);                   /* process the request  */</span><br><span class="line">        Close(connfd);                   /* done with this client  */</span><br><span class="line">        exit(0);                         /* child terminates  */</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Close(connfd);                       /* parent closes connected socket  */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>父进程关闭了已连接描述符后，子进程为什么仍然能够使用该描述符和客户端通信?</p>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>当父进程派生子进程时，它得到一个已连接描述符的副本，并将相关文件表中的引用计数从1增加到2。当父进程关闭它的描述符副本时，<br>引用计数就从2减少到1。因为内核不会关闭一个文件，直到文件表中它的引用计数值变为零，所以子进程这边的连接端将保持打开。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/22/典型的并发服务器程序轮廓/" data-id="cjydvnxpc000u07fxr8vkfdgq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/22/典型的并发服务器程序轮廓/" data-id="cjyr25z7q000ug2fxecdonm2q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
