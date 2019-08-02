@@ -5,15 +5,20 @@
   
 
   
-  <title>Tag: 博客搭建 | mkzpd</title>
+  <title>链路层学习笔记 | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="mkzpd">
-<meta property="og:url" content="http://yoursite.com/tags/博客搭建/index.html">
+  <meta name="description" content="概述在深入学习链路层的时候把比较重要的知识点记下来。">
+<meta name="keywords" content="TCP&#x2F;IP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链路层学习笔记">
+<meta property="og:url" content="http://yoursite.com/2019/08/02/链路层学习笔记/index.html">
 <meta property="og:site_name" content="mkzpd">
+<meta property="og:description" content="概述在深入学习链路层的时候把比较重要的知识点记下来。">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-02T09:40:57.253Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mkzpd">
+<meta name="twitter:title" content="链路层学习笔记">
+<meta name="twitter:description" content="概述在深入学习链路层的时候把比较重要的知识点记下来。">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -60,40 +65,62 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/18/博客搭建/" class="archive-article-date">
-  <time datetime="2019-06-18T11:47:32.000Z" itemprop="datePublished">Jun 18</time>
+        <section id="main"><article id="post-链路层学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/02/链路层学习笔记/" class="article-date">
+  <time datetime="2019-08-02T08:06:54.000Z" itemprop="datePublished">2019-08-02</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/18/博客搭建/">博客搭建</a>
+    <h1 class="article-title" itemprop="name">
+      链路层学习笔记
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在深入学习链路层的时候把比较重要的知识点记下来。</p>
+<a id="more"></a>
 
+<h2 id="链路层主要的目的"><a href="#链路层主要的目的" class="headerlink" title="链路层主要的目的"></a>链路层主要的目的</h2><p>在TCP/IP协议族中，链路层主要有三个目的：(1) 为IP模块发送和接收IP数据报; (2) 为ARP模块发送ARP请求和接收ARP应答; (3)为RARP发<br>送RARP请求和接收RARP应答;</p>
+<p>TCP/IP支持多种不同的链路层协议，这取决于网络所使用的硬件，如以太网，令牌环网，FDDI(光纤分布式数据接口)及RS-232串行线路等。</p>
+<h2 id="以太网的封装"><a href="#以太网的封装" class="headerlink" title="以太网的封装"></a>以太网的封装</h2><p>以太网的首部长14个字节，分别是6字节(48位)的目的地址和6字节(48位)的源地址，目的地址和源地址即为MAC硬件地址，还有2字节的帧<br>类型，这两个字节可以区分帧是以太网帧还是802.3帧，事实上大多数是以太网帧。这两个字节长的以太网类型表示后面数据的类型，<font color="red"><b>对于<br>ARP请求或应答来说，该字段的值为0x0806;如果它的值为0x0800，则表示类型后面是IP数据报。</b></font>以太网要求数据部分最少要有46字节，<br>为保证这一点，必须在不足的空间插入填充(pad)字节。以太网要求数据部分的最大值为1500字节。数据部分(帧)后面还有4字节的CRC检<br>验码，CRC字段用于帧内后续字节差错的循环冗余码检验(检验和)(它也被称为FCS或帧检验序列)。</p>
+<h2 id="最大传输单元MTU"><a href="#最大传输单元MTU" class="headerlink" title="最大传输单元MTU"></a>最大传输单元MTU</h2><p>以太网和820.3对数据帧的长度都有一个限制，其最大值分别是1500和1492字节。链路层的这个特性称作MTU，最大传输单元。不同类型<br>的网络大多数都有一个上限。</p>
+<p>如果IP层有一个数据报要传，而且数据的长度比链路层的MTU还大，那么IP层就需要进行分片(fragmentation)，把数据报分成若干片，这<br>样每一片都小于MTU。</p>
+<h2 id="路径MTU"><a href="#路径MTU" class="headerlink" title="路径MTU"></a>路径MTU</h2><p>当在同一个网络上的两台主机互相进行通信时，该网络的MTU是非常重要的。但是如果两台主机之间的通信要通过多个网络，那么每个网<br>络的链路层就可能有不同的MTU。重要的不是两台主机所在网络的MTU值，重要的是两台通信主机路径中的最小MTU。它被称作路径<br>MTU。两台主机之间的路径MTU不一定是个常数。它取决于当时所选择的路由。而选路不一定是对称的(从A到B的路由可能与从B到A的路<br>由不同)，因此路径MTU在两个方向上不一定是一致的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/08/02/链路层学习笔记/" data-id="cjytvmluo001628fxd89uesf1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/07/22/典型的并发服务器程序轮廓/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">典型的并发服务器程序轮廓</div>
+    </a>
+  
+</nav>
+
+  
+</article>
 
 </section>
         
