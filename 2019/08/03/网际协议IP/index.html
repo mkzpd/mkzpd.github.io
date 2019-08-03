@@ -5,20 +5,22 @@
   
 
   
-  <title>链路层学习笔记 | mkzpd</title>
+  <title>网际协议IP | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="概述在深入学习链路层的时候把比较重要的知识点记下来。">
+  <meta name="description" content="概述分析数据包的时候常常遇到对IP首部的分析，故把比较重要的知识记下来。">
 <meta name="keywords" content="TCP&#x2F;IP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="链路层学习笔记">
-<meta property="og:url" content="http://yoursite.com/2019/08/02/链路层学习笔记/index.html">
+<meta property="og:title" content="网际协议IP">
+<meta property="og:url" content="http://yoursite.com/2019/08/03/网际协议IP/index.html">
 <meta property="og:site_name" content="mkzpd">
-<meta property="og:description" content="概述在深入学习链路层的时候把比较重要的知识点记下来。">
+<meta property="og:description" content="概述分析数据包的时候常常遇到对IP首部的分析，故把比较重要的知识记下来。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-02T09:40:57.253Z">
+<meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/IP-header.png">
+<meta property="og:updated_time" content="2019-08-03T00:27:44.867Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="链路层学习笔记">
-<meta name="twitter:description" content="概述在深入学习链路层的时候把比较重要的知识点记下来。">
+<meta name="twitter:title" content="网际协议IP">
+<meta name="twitter:description" content="概述分析数据包的时候常常遇到对IP首部的分析，故把比较重要的知识记下来。">
+<meta name="twitter:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/IP-header.png">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -65,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-链路层学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-网际协议IP" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2019/08/02/链路层学习笔记/" class="article-date">
-  <time datetime="2019-08-02T08:06:54.000Z" itemprop="datePublished">2019-08-02</time>
+    <a href="/2019/08/03/网际协议IP/" class="article-date">
+  <time datetime="2019-08-02T22:08:51.000Z" itemprop="datePublished">2019-08-03</time>
 </a>
     
   </div>
@@ -79,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      链路层学习笔记
+      网际协议IP
     </h1>
   
 
@@ -87,20 +89,41 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在深入学习链路层的时候把比较重要的知识点记下来。</p>
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>分析数据包的时候常常遇到对IP首部的分析，故把比较重要的知识记下来。</p>
 <a id="more"></a>
 
-<h2 id="链路层主要的目的"><a href="#链路层主要的目的" class="headerlink" title="链路层主要的目的"></a>链路层主要的目的</h2><p>在TCP/IP协议族中，链路层主要有三个目的：(1) 为IP模块发送和接收IP数据报; (2) 为ARP模块发送ARP请求和接收ARP应答; (3)为RARP发<br>送RARP请求和接收RARP应答;</p>
-<p>TCP/IP支持多种不同的链路层协议，这取决于网络所使用的硬件，如以太网，令牌环网，FDDI(光纤分布式数据接口)及RS-232串行线路等。</p>
-<h2 id="以太网的封装"><a href="#以太网的封装" class="headerlink" title="以太网的封装"></a>以太网的封装</h2><p>以太网的首部长14个字节，分别是6字节(48位)的目的地址和6字节(48位)的源地址，目的地址和源地址即为MAC硬件地址，还有2字节的帧<br>类型，这两个字节可以区分帧是以太网帧还是802.3帧，事实上大多数是以太网帧。这两个字节长的以太网类型表示后面数据的类型，<font color="red"><b>对于<br>ARP请求或应答来说，该字段的值为0x0806;如果它的值为0x0800，则表示类型后面是IP数据报。</b></font>以太网要求数据部分最少要有46字节，<br>为保证这一点，必须在不足的空间插入填充(pad)字节。以太网要求数据部分的最大值为1500字节。数据部分(帧)后面还有4字节的CRC检<br>验码，CRC字段用于帧内后续字节差错的循环冗余码检验(检验和)(它也被称为FCS或帧检验序列)。</p>
-<h2 id="最大传输单元MTU"><a href="#最大传输单元MTU" class="headerlink" title="最大传输单元MTU"></a>最大传输单元MTU</h2><p>以太网和820.3对数据帧的长度都有一个限制，其最大值分别是1500和1492字节。链路层的这个特性称作MTU，最大传输单元。不同类型<br>的网络大多数都有一个上限。</p>
-<p>如果IP层有一个数据报要传，而且数据的长度比链路层的MTU还大，那么IP层就需要进行分片(fragmentation)，把数据报分成若干片，这<br>样每一片都小于MTU。</p>
-<h2 id="路径MTU"><a href="#路径MTU" class="headerlink" title="路径MTU"></a>路径MTU</h2><p>当在同一个网络上的两台主机互相进行通信时，该网络的MTU是非常重要的。但是如果两台主机之间的通信要通过多个网络，那么每个网<br>络的链路层就可能有不同的MTU。重要的不是两台主机所在网络的MTU值，重要的是两台通信主机路径中的最小MTU。它被称作路径<br>MTU。两台主机之间的路径MTU不一定是个常数。它取决于当时所选择的路由。而选路不一定是对称的(从A到B的路由可能与从B到A的路<br>由不同)，因此路径MTU在两个方向上不一定是一致的。</p>
+<h2 id="IP数据报格式及首部中的各字段"><a href="#IP数据报格式及首部中的各字段" class="headerlink" title="IP数据报格式及首部中的各字段"></a>IP数据报格式及首部中的各字段</h2><p><img src="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/IP-header.png" alt="IP数据报格式及首部中的各字段图示"></p>
+<p>普通的IP首部长为20个字节，除非含有选项字段。由于TCP/IP首部中所有的二进制整数在网络中传输时都要求以大端字节序，因此它又<br>称作网络字节序。</p>
+<p>现对IP首部字段作说明:</p>
+<ol>
+<li><p>占4个位的版本用以说明使用的IP协议版本号，目前使用最多的是版本号4,因此有时也称为IPv4。IPv4即将面临不够用的情况，因此<br>出现了IPv4的升级版IPv6.</p>
+</li>
+<li><p>4位首部长度指的是首部占32bit子的数目，包括任何选项。由于它是一个4比特字段，最大值表示为(0b)1111,即十六进制0xF,十进制<br>为15, 32bit是4字节，所以首部最长为15 * 4 = 60字节。普通IP数据报(没有任何选择项)字段的值是5,即20字节。</p>
+</li>
+<li><p>8位的服务类型(TOS)字段包括一个3bit的优先权字段(现在已被忽略)，4bit的TOS子字段和1bit未用位但必须置0。4bit的TOS分别代<br>表:最小时延，最大吞吐量，最高可靠性和最小费用。4bit中只能置其中1bit。如果所有4bit均为0,那么就意味着是一般服务。比如<br>Telnet的4bit的TOS值表示为1000,即要求Telnet是最小时延，加上1bit未用位但必须置0的位，那么Telnet的TOS值的十六进制为<br>0x10,如果用tcpdump抓包分析的时候会看到相应的十六进制输出。不过现在大多数的TCP/IP实现都不支持TOS特性，即使设置了相<br>应的位表示，最终还是看路由器执行与否。</p>
+</li>
+<li><p>16位总长度字段是指整个IP数据报的长度，以字节为单位。利用首部长度字段和总长度字段，就可以知道IP数据报中数据内容的起始<br>位置和长度。由于该字段长16比特，所以IP数据报最长可达65535字节(超级通道的MTU为65535,它的意思其实不是一个真正的<br>MTU— —它使用了最长的IP数据报)。当数据报被分片时，该字段的值也随着变化。总长度字段是IP首部中必要的内容，因为一些<br>数据链路(如以太网)需要填充一些数据以达到最小长度。尽管以太网的最小帧长为46字节，但是IP数据可能会更短。如果没有总长度<br>字段，那么IP层就不知道46字节中有多少是IP数据报的内容。</p>
+</li>
+<li><p>16位的标识字段唯一地标识主机发送的每一份数据报，通常每发送一份报文它的值就会加1。以后再详细补充。</p>
+</li>
+<li><p>3位标志字段以后再详细补充。</p>
+</li>
+<li><p>13位片偏移字段以后再详细补充。</p>
+</li>
+<li><p>8位TTL生存时间字段最大值为255,该字段设置了数据报可以经过的最多路由数，它指定了数据报的生存时间。TTL的初始值由源主机<br>设置(通常为32或64)，一旦经过一个处理它的路由器，它的值就减去1。当该字段的值为0时，数据报就被丢弃，并发送ICMP报文通<br>知源主机。</p>
+</li>
+<li><p>8位的协议字段用来表示它如何被IP用来对数据报进行分用。根据它可以识别是哪个协议向IP传送数据，其中<font color="red"><b>1表示ICMP协议，<br>2表示IGMP协议，6表示TCP协议，17表示UDP协议。</b></font></p>
+</li>
+<li><p>16位首部检验和字段是根据IP首部计算的检验和码。它不对首部后面的数据进行计算。ICMP，IGMP，UDP和TCP在它们各自的首部<br>中均含有同时覆盖首部和数据检验和码。</p>
+</li>
+<li><p>32位的源IP地址和目的IP地址这个比较好理解，每一份IP数据报都包含源IP地址和目的IP地址，它们都是32bit的值。</p>
+</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/02/链路层学习笔记/" data-id="cjyusa7zs0019eifxe3na494g" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/03/网际协议IP/" data-id="cjyusa7ze0011eifxxrn92j25" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
@@ -111,19 +134,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/08/03/网际协议IP/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          网际协议IP
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/07/22/典型的并发服务器程序轮廓/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/08/02/链路层学习笔记/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">典型的并发服务器程序轮廓</div>
+      <div class="article-nav-title">链路层学习笔记</div>
     </a>
   
 </nav>
