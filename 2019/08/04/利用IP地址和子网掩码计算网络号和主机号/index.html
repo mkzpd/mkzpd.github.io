@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>利用IP地址和子网掩码计算网络号和主机号 | mkzpd</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述在学习TCP/IP的时候一开始看到主机号不知道怎么来的，仔细一想是可以算出来的。">
+<meta name="keywords" content="TCP&#x2F;IP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用IP地址和子网掩码计算网络号和主机号">
+<meta property="og:url" content="http://yoursite.com/2019/08/04/利用IP地址和子网掩码计算网络号和主机号/index.html">
+<meta property="og:site_name" content="mkzpd">
+<meta property="og:description" content="概述在学习TCP/IP的时候一开始看到主机号不知道怎么来的，仔细一想是可以算出来的。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-03T22:10:02.668Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用IP地址和子网掩码计算网络号和主机号">
+<meta name="twitter:description" content="概述在学习TCP/IP的时候一开始看到主机号不知道怎么来的，仔细一想是可以算出来的。">
+  
+    <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">mkzpd</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-利用IP地址和子网掩码计算网络号和主机号" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/04/利用IP地址和子网掩码计算网络号和主机号/" class="article-date">
+  <time datetime="2019-08-03T21:49:26.000Z" itemprop="datePublished">2019-08-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      利用IP地址和子网掩码计算网络号和主机号
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在学习TCP/IP的时候一开始看到主机号不知道怎么来的，仔细一想是可以算出来的。</p>
+<a id="more"></a>
+
+<h2 id="利用IP地址和子网掩码快速得出网络号和主机号实现代码"><a href="#利用IP地址和子网掩码快速得出网络号和主机号实现代码" class="headerlink" title="利用IP地址和子网掩码快速得出网络号和主机号实现代码"></a>利用IP地址和子网掩码快速得出网络号和主机号实现代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">// a file named get-netid-subnetid-hostid.c</span><br><span class="line"></span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;arpa/inet.h&gt;</span><br><span class="line"></span><br><span class="line">#define MAXBUF   8192  /* Max I/O buffer size */</span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">    int IPAddress, subnetMask,temp, hostID, calculHostID;</span><br><span class="line">    struct in_addr inaddrOne, inaddrTwo, inaddrThree; /* Address in network byte order */</span><br><span class="line">    struct in_addr inaddr;</span><br><span class="line">    int checkOne, checkTwo, checkThree;</span><br><span class="line">    char buf[MAXBUF];</span><br><span class="line">    if(argc != 3)&#123;</span><br><span class="line">        fprintf(stderr,&quot;Usage: %s IP-address subnet-mask\n&quot;,argv[0]);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    checkOne = inet_pton(AF_INET, argv[1], &amp;inaddrOne);</span><br><span class="line">    checkTwo = inet_pton(AF_INET, argv[2], &amp;inaddrTwo);</span><br><span class="line"></span><br><span class="line">    if (checkOne == 0)&#123;</span><br><span class="line">	    printf(&quot;inet_pton error: %s is invalid dotted-decimal address\n&quot;,argv[1]);</span><br><span class="line">        fprintf(stderr,&quot;The input max dotted-decimal should be 255.255.255.255\n&quot;);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">    else if (checkOne &lt; 0)&#123;</span><br><span class="line">        printf(&quot;inet_pton error\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (checkTwo == 0)&#123;</span><br><span class="line">	    printf(&quot;inet_pton error: %s is invalid dotted-decimal address\n&quot;,argv[2]);</span><br><span class="line">        fprintf(stderr,&quot;The input max dotted-decimal should be 255.255.255.255\n&quot;);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;</span><br><span class="line">    else if (checkTwo &lt; 0)&#123;</span><br><span class="line">        printf(&quot;inet_pton error\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    IPAddress =  ntohl(inaddrOne.s_addr);</span><br><span class="line">    subnetMask =  ntohl(inaddrTwo.s_addr);</span><br><span class="line"></span><br><span class="line">    temp = IPAddress &amp; subnetMask;</span><br><span class="line"></span><br><span class="line">    inaddr.s_addr = htonl(temp);</span><br><span class="line">    if(!inet_ntop(AF_INET, &amp;inaddr, buf, MAXBUF))&#123;</span><br><span class="line">        printf(&quot;inet_ntop\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    else&#123;</span><br><span class="line">        printf(&quot;netID/subnetID: %s\n&quot;,buf);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    checkThree = inet_pton(AF_INET, buf, &amp;inaddrThree);</span><br><span class="line">    if (checkThree == 0)&#123;</span><br><span class="line">	    printf(&quot;inet_pton error: invalid dotted-decimal address\n&quot;);</span><br><span class="line">        fprintf(stderr,&quot;The input max dotted-decimal should be 255.255.255.255\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    else if (checkThree &lt; 0)&#123;</span><br><span class="line">        printf(&quot;inet_pton error\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    calculHostID = ntohl(inaddrThree.s_addr);</span><br><span class="line">    hostID = IPAddress - calculHostID;</span><br><span class="line">    printf(&quot;hostID: %d\n&quot;,hostID);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译并运行:</p>
+<pre><code>cc -g -o get-netid-subnetid-hostid get-netid-subnetid-hostid.c
+./get-netid-subnetid-hostid</code></pre><p>使用样例:</p>
+<pre><font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$  ./get-netid-subnetid-hostid
+Usage: ./get-netid-subnetid-hostid IP-address subnet-mask
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$ ./get-netid-subnetid-hostid 140.252.1.29 255.255.255.0
+netID/subnetID: 140.252.1.0
+hostID: 29
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$ ./get-netid-subnetid-hostid 140.252.13.33 255.255.255.224
+netID/subnetID: 140.252.13.32
+hostID: 1
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$ ./get-netid-subnetid-hostid 140.252.13.34 255.255.255.224
+netID/subnetID: 140.252.13.32
+hostID: 2
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$ ./get-netid-subnetid-hostid 140.252.13.35 255.255.255.224
+netID/subnetID: 140.252.13.32
+hostID: 3
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$ ./get-netid-subnetid-hostid 140.252.13.66 255.255.255.224
+netID/subnetID: 140.252.13.64
+hostID: 2
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$ ./get-netid-subnetid-hostid 140.252.13.65 255.255.255.224
+netID/subnetID: 140.252.13.64
+hostID: 1
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$ ./get-netid-subnetid-hostid 140.252.13.63 255.255.255.224
+netID/subnetID: 140.252.13.32
+hostID: 31
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$  ./get-netid-subnetid-hostid 255.255.255.255.1 255.255.255.255
+inet_pton error: 255.255.255.255.1 is invalid dotted-decimal address
+The input max dotted-decimal should be 255.255.255.255
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$  ./get-netid-subnetid-hostid 255.255.255.255.1 255.255.255.255.2
+inet_pton error: 255.255.255.255.1 is invalid dotted-decimal address
+The input max dotted-decimal should be 255.255.255.255
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$   ./get-netid-subnetid-hostid 255.255.255.255 255.255.255.255.2
+inet_pton error: 255.255.255.255.2 is invalid dotted-decimal address
+The input max dotted-decimal should be 255.255.255.255
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$   ./get-netid-subnetid-hostid 255.255.255.255 255.255.255.255
+netID/subnetID: 255.255.255.255
+hostID: 0
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$   ./get-netid-subnetid-hostid 140.252.13.34 255.255.255.221.2
+inet_pton error: 255.255.255.221.2 is invalid dotted-decimal address
+The input max dotted-decimal should be 255.255.255.255
+<font color="#8AE234"><b>haha@hello</b></font>:<font color="#729FCF"><b>~/.../lj</b></font>$
+</pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/08/04/利用IP地址和子网掩码计算网络号和主机号/" data-id="cjyw2xpu1000u26fxpzacisom" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/08/03/网际协议IP学习笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">网际协议IP学习笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统编程/">系统编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Leetcode/" style="font-size: 15px;">Leetcode</a> <a href="/tags/TCP-IP/" style="font-size: 20px;">TCP/IP</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/系统编程/" style="font-size: 17.5px;">系统编程</a> <a href="/tags/网络编程/" style="font-size: 12.5px;">网络编程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/04/利用IP地址和子网掩码计算网络号和主机号/">利用IP地址和子网掩码计算网络号和主机号</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/03/网际协议IP学习笔记/">网际协议IP学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/02/链路层学习笔记/">链路层学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/22/典型的并发服务器程序轮廓/">典型的并发服务器程序轮廓</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/19/IP子网的划分/">IP子网的划分</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 mkzpd<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
