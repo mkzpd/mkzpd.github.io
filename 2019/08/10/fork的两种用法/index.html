@@ -5,15 +5,20 @@
   
 
   
-  <title>Tag: TCP/IP | mkzpd</title>
+  <title>fork的两种用法 | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="mkzpd">
-<meta property="og:url" content="http://yoursite.com/tags/TCP-IP/page/2/index.html">
+  <meta name="description" content="概述总结记录下fork的两种用法以备不时之需。">
+<meta name="keywords" content="系统编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fork的两种用法">
+<meta property="og:url" content="http://yoursite.com/2019/08/10/fork的两种用法/index.html">
 <meta property="og:site_name" content="mkzpd">
+<meta property="og:description" content="概述总结记录下fork的两种用法以备不时之需。">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-08-10T00:33:50.942Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mkzpd">
+<meta name="twitter:title" content="fork的两种用法">
+<meta name="twitter:description" content="概述总结记录下fork的两种用法以备不时之需。">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -60,45 +65,58 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/06/28/为什么说TCP提供可靠的传输服务/" class="archive-article-date">
-  <time datetime="2019-06-28T07:36:27.000Z" itemprop="datePublished">Jun 28</time>
+        <section id="main"><article id="post-fork的两种用法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/10/fork的两种用法/" class="article-date">
+  <time datetime="2019-08-10T00:23:07.000Z" itemprop="datePublished">2019-08-10</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/28/为什么说TCP提供可靠的传输服务/">为什么说TCP提供可靠的传输服务</a>
+    <h1 class="article-title" itemprop="name">
+      fork的两种用法
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-
-  <nav id="page-nav">
+      </header>
     
-    <a class="extend prev" rel="prev" href="/tags/TCP-IP/">&laquo; Prev</a><a class="page-number" href="/tags/TCP-IP/">1</a><span class="page-number current">2</span>
-  </nav>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>总结记录下fork的两种用法以备不时之需。</p>
+<a id="more"></a>
+
+<h2 id="两种用法"><a href="#两种用法" class="headerlink" title="两种用法"></a>两种用法</h2><p>1) 一个父进程希望复制自己，使父进程和子进程同时执行不同的代码段。这在网络服务进程中是常见的— — 父进程等待客户端的服务请<br>求。当这种请求到达时，父进程调用fork，使子进程处理此请求。父进程则继续等待下一个服务请求。</p>
+<p>2) 一个进程要执行一个不同的程序。这对shell是常见的情况。在这种情况下，子进程从fork返回后立即调用exec。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/08/10/fork的两种用法/" data-id="cjz4szfnl0005wqfxs8z342i4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统编程/">系统编程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/08/04/利用IP地址和子网掩码计算网络号和主机号/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">利用IP地址和子网掩码计算网络号和主机号</div>
+    </a>
+  
+</nav>
+
+  
+</article>
 
 </section>
         
