@@ -62,6 +62,61 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-一个可以避免dns查询污染的工具" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/28/一个可以避免dns查询污染的工具/" class="article-date">
+  <time datetime="2019-08-28T01:06:34.000Z" itemprop="datePublished">2019-08-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/28/一个可以避免dns查询污染的工具/">一个可以避免dns查询污染的工具</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>dns查询的时候总是受到gfw的污染，一种污染的方式是gfw抢答一个假的ip地址给dns，因为dns只接受响应最快的结果，所以回答比较慢<br>的真实ip被丢弃，没有被返回。</p>
+<h2 id="实现避免dns污染"><a href="#实现避免dns污染" class="headerlink" title="实现避免dns污染"></a>实现避免dns污染</h2><p>通过wireshark抓包知道了gfw污染的原理，所以我写了一个工具，在中国不用代理即可得到响应比较慢的真实ip.</p>
+<p>简单说明下:</p>
+<p>dns污染的一种方式是当我们进行dns查询时，gfw进行抢答，给一个错误的ip地址，dns只会返回响应最快的ip，<br>这样到达比较晚的正确ip被抛弃，实现了gfw的污染。</p>
+<p>利用抓包可以得到dns响应结果，包括了gfw抢答的假ip和达到比较晚的正确ip。分析抓包结果可以看到我们查询的dns尾部带有OPT, gfw抢答的假ip尾部没有OPT, 而dns返回比较晚的正确(可能是正确的?限于没有使用cdn的网站)ip尾部带有OPT. (v2ex发图不方便就不发图了，大家可以用wireshark抓包看下)</p>
+<p>所以我写了一个工具用于获取到达比较晚的dns响应结果，即得到正确的dns返回结果。(不需任何代理，正常操作)</p>
+<p>工具地址: <a href="https://github.com/mkzpd/getCorrectDnsResult" target="_blank" rel="noopener">https://github.com/mkzpd/getCorrectDnsResult</a></p>
+<p>经测试一些知名网站:</p>
+<p>google.com可以返回真实ip地址(即在国外主机机器上浏览器中输入得到的ip地址直接打开google页)</p>
+<p>facebook.com同样可以返回真实ip地址</p>
+<p>youtube.com返回的ip地址在国外主机机器上浏览器中打开的是google首页(可能是因为youtube属于G家的？)</p>
+<p>twitter.com返回的ip地址在国外主机机器上浏览器中打开的是空白页，这个ip地址和在国外主机机器上<br>ping twitter.com显示的ip地址一样(可能是因为twitter用了cdn ?)</p>
+<p>ebay.com返回的ip地址在国外主机机器上浏览器中打开的是 <a href="https://www.ebay.com/n/error" target="_blank" rel="noopener">https://www.ebay.com/n/error</a>  (?????)</p>
+<p>baidu.com返回ip地址在国外主机机器上浏览器中打开的是百度首页</p>
+<p>zhihu.com返回ip地址在国外主机机器上浏览器中打开显示的是提示信息，不是知乎首页</p>
+<p>douban.com返回ip地址在国外主机机器上浏览器中打开显示的是提示信息，不是豆瓣首页(可能是与知乎，twitter一样用了cdn ???)</p>
+<p>目前这个工具还不是太完美，欢迎大家给出意见和评论。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/08/28/一个可以避免dns查询污染的工具/" data-id="cjzukhpgw000jfqfx82xhnmb0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dns/">dns</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-fork的两种用法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/08/10/fork的两种用法/" class="article-date">
@@ -93,7 +148,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/10/fork的两种用法/" data-id="cjz4szfnl0005wqfxs8z342i4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/10/fork的两种用法/" data-id="cjzukhpg6000afqfx27xz0tdd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统编程/">系统编程</a></li></ul>
@@ -136,7 +191,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/04/利用IP地址和子网掩码计算网络号和主机号/" data-id="cjz4szfp8000twqfxt5qzfie5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/04/利用IP地址和子网掩码计算网络号和主机号/" data-id="cjzukhpi10015fqfxrxznulbl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
@@ -179,7 +234,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/03/网际协议IP学习笔记/" data-id="cjz4szfpy0018wqfxcmzrp8vh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/03/网际协议IP学习笔记/" data-id="cjzukhpm3001qfqfxvmzopzpr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
@@ -222,7 +277,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/02/链路层学习笔记/" data-id="cjz4szftz001qwqfxepbe3wn6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/02/链路层学习笔记/" data-id="cjzukhpii001efqfxqk52xods" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
@@ -265,7 +320,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/22/典型的并发服务器程序轮廓/" data-id="cjz4szfq6001dwqfxb5fxdx08" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/22/典型的并发服务器程序轮廓/" data-id="cjzukhphg000tfqfxyajkqif5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
@@ -308,7 +363,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/19/IP子网的划分/" data-id="cjz4szfmu0001wqfx6nlmtcl2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/19/IP子网的划分/" data-id="cjzukhpfp0004fqfxyn4uma5o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
@@ -351,7 +406,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/16/ping-IP后敲回车-发包前会发生什么/" data-id="cjz4szfow000mwqfx4535262a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/16/ping-IP后敲回车-发包前会发生什么/" data-id="cjzukhpgs000hfqfx5zyjfivm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li></ul>
@@ -394,7 +449,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/13/进程和线程/" data-id="cjz4szfqb001fwqfx0y4ir89p" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/13/进程和线程/" data-id="cjzukhpid001bfqfx386m30my" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/系统编程/">系统编程</a></li></ul>
@@ -437,50 +492,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/12/leetcode-第5题-Longest-Palindromic-Substring/" data-id="cjz4szfoc000fwqfxi8isf5df" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Leetcode/">Leetcode</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-leetcode-第3题-Longest-Substring-Without-Repeating-Characters" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/07/10/leetcode-第3题-Longest-Substring-Without-Repeating-Characters/" class="article-date">
-  <time datetime="2019-07-10T07:51:09.000Z" itemprop="datePublished">2019-07-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/07/10/leetcode-第3题-Longest-Substring-Without-Repeating-Characters/">leetcode 第3题 Longest Substring Without Repeating Characters</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p><a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/description/" target="_blank" rel="noopener">https://leetcode.com/problems/longest-substring-without-repeating-characters/description/</a></p>
-        
-          <p class="article-more-link">
-            <a href="/2019/07/10/leetcode-第3题-Longest-Substring-Without-Repeating-Characters/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/07/10/leetcode-第3题-Longest-Substring-Without-Repeating-Characters/" data-id="cjz4szfol000iwqfx7aupkv95" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/07/12/leetcode-第5题-Longest-Palindromic-Substring/" data-id="cjzukhphl000wfqfx27eg7i48" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Leetcode/">Leetcode</a></li></ul>
@@ -510,7 +522,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统编程/">系统编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dns/">dns</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统编程/">系统编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
     </div>
   </div>
 
@@ -520,7 +532,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Leetcode/" style="font-size: 15px;">Leetcode</a> <a href="/tags/TCP-IP/" style="font-size: 20px;">TCP/IP</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/系统编程/" style="font-size: 17.5px;">系统编程</a> <a href="/tags/网络编程/" style="font-size: 12.5px;">网络编程</a>
+      <a href="/tags/Leetcode/" style="font-size: 15px;">Leetcode</a> <a href="/tags/TCP-IP/" style="font-size: 20px;">TCP/IP</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/系统编程/" style="font-size: 17.5px;">系统编程</a> <a href="/tags/网络编程/" style="font-size: 12.5px;">网络编程</a>
     </div>
   </div>
 
@@ -542,6 +554,10 @@
       <ul>
         
           <li>
+            <a href="/2019/08/28/一个可以避免dns查询污染的工具/">一个可以避免dns查询污染的工具</a>
+          </li>
+        
+          <li>
             <a href="/2019/08/10/fork的两种用法/">fork的两种用法</a>
           </li>
         
@@ -555,10 +571,6 @@
         
           <li>
             <a href="/2019/08/02/链路层学习笔记/">链路层学习笔记</a>
-          </li>
-        
-          <li>
-            <a href="/2019/07/22/典型的并发服务器程序轮廓/">典型的并发服务器程序轮廓</a>
           </li>
         
       </ul>
