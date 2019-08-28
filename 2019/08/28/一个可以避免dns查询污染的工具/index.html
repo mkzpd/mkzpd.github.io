@@ -7,18 +7,18 @@
   
   <title>一个可以避免dns查询污染的工具 | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="概述dns查询的时候总是受到gfw的污染，一种污染的方式是gfw抢答一个假的ip地址给dns，因为dns只接受响应最快的结果，所以回答比较慢的真实ip被丢弃，没有被返回。 实现避免dns污染通过wireshark抓包知道了gfw污染的原理，所以我写了一个工具，在中国不用代理即可得到响应比较慢的真实ip. 简单说明下: dns污染的一种方式是当我们进行dns查询时，gfw进行抢答，给一个错误的ip地">
+  <meta name="description" content="概述dns查询的时候总是受到gfw的污染，一种污染的方式是gfw抢答一个假的ip地址给dns，因为dns只接受响应最快的结果，所以回答比较慢的真实ip被丢弃，没有被返回。">
 <meta name="keywords" content="dns">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一个可以避免dns查询污染的工具">
 <meta property="og:url" content="http://yoursite.com/2019/08/28/一个可以避免dns查询污染的工具/index.html">
 <meta property="og:site_name" content="mkzpd">
-<meta property="og:description" content="概述dns查询的时候总是受到gfw的污染，一种污染的方式是gfw抢答一个假的ip地址给dns，因为dns只接受响应最快的结果，所以回答比较慢的真实ip被丢弃，没有被返回。 实现避免dns污染通过wireshark抓包知道了gfw污染的原理，所以我写了一个工具，在中国不用代理即可得到响应比较慢的真实ip. 简单说明下: dns污染的一种方式是当我们进行dns查询时，gfw进行抢答，给一个错误的ip地">
+<meta property="og:description" content="概述dns查询的时候总是受到gfw的污染，一种污染的方式是gfw抢答一个假的ip地址给dns，因为dns只接受响应最快的结果，所以回答比较慢的真实ip被丢弃，没有被返回。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-28T01:13:54.654Z">
+<meta property="og:updated_time" content="2019-08-28T01:18:03.014Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一个可以避免dns查询污染的工具">
-<meta name="twitter:description" content="概述dns查询的时候总是受到gfw的污染，一种污染的方式是gfw抢答一个假的ip地址给dns，因为dns只接受响应最快的结果，所以回答比较慢的真实ip被丢弃，没有被返回。 实现避免dns污染通过wireshark抓包知道了gfw污染的原理，所以我写了一个工具，在中国不用代理即可得到响应比较慢的真实ip. 简单说明下: dns污染的一种方式是当我们进行dns查询时，gfw进行抢答，给一个错误的ip地">
+<meta name="twitter:description" content="概述dns查询的时候总是受到gfw的污染，一种污染的方式是gfw抢答一个假的ip地址给dns，因为dns只接受响应最快的结果，所以回答比较慢的真实ip被丢弃，没有被返回。">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -88,10 +88,12 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>dns查询的时候总是受到gfw的污染，一种污染的方式是gfw抢答一个假的ip地址给dns，因为dns只接受响应最快的结果，所以回答比较慢<br>的真实ip被丢弃，没有被返回。</p>
+<a id="more"></a>
+
 <h2 id="实现避免dns污染"><a href="#实现避免dns污染" class="headerlink" title="实现避免dns污染"></a>实现避免dns污染</h2><p>通过wireshark抓包知道了gfw污染的原理，所以我写了一个工具，在中国不用代理即可得到响应比较慢的真实ip.</p>
 <p>简单说明下:</p>
 <p>dns污染的一种方式是当我们进行dns查询时，gfw进行抢答，给一个错误的ip地址，dns只会返回响应最快的ip，<br>这样到达比较晚的正确ip被抛弃，实现了gfw的污染。</p>
-<p>利用抓包可以得到dns响应结果，包括了gfw抢答的假ip和达到比较晚的正确ip。分析抓包结果可以看到我们查询的dns尾部带有OPT, gfw抢答的假ip尾部没有OPT, 而dns返回比较晚的正确(可能是正确的?限于没有使用cdn的网站)ip尾部带有OPT. (v2ex发图不方便就不发图了，大家可以用wireshark抓包看下)</p>
+<p>利用抓包可以得到dns响应结果，包括了gfw抢答的假ip和达到比较晚的正确ip。分析抓包结果可以看到我们查询的dns尾部带有OPT, gfw抢答的假ip尾部没有OPT, 而dns返回比较晚的正确(可能是正确的?限于没有使用cdn的网站)ip尾部带有OPT. (大家可以用wireshark抓包看下)</p>
 <p>所以我写了一个工具用于获取到达比较晚的dns响应结果，即得到正确的dns返回结果。(不需任何代理，正常操作)</p>
 <p>工具地址: <a href="https://github.com/mkzpd/getCorrectDnsResult" target="_blank" rel="noopener">https://github.com/mkzpd/getCorrectDnsResult</a></p>
 <p>经测试一些知名网站:</p>
@@ -108,7 +110,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/08/28/一个可以避免dns查询污染的工具/" data-id="cjzukhpgw000jfqfx82xhnmb0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/08/28/一个可以避免dns查询污染的工具/" data-id="cjzukj8vf000rmkfxbtl717ap" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dns/">dns</a></li></ul>
