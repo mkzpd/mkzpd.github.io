@@ -7,18 +7,20 @@
   
   <title>拆除csapp二进制炸弹超详细的解析之phase_2 | mkzpd</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="概述接着继续解析。">
+  <meta name="description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_1 继续解析。">
 <meta name="keywords" content="汇编与反汇编">
 <meta property="og:type" content="article">
 <meta property="og:title" content="拆除csapp二进制炸弹超详细的解析之phase_2">
 <meta property="og:url" content="http://yoursite.com/2019/09/09/拆除csapp二进制炸弹超详细的解析之phase_2/index.html">
 <meta property="og:site_name" content="mkzpd">
-<meta property="og:description" content="概述接着继续解析。">
+<meta property="og:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_1 继续解析。">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-09-08T06:56:36.251Z">
+<meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb2.png">
+<meta property="og:updated_time" content="2019-09-08T09:41:31.367Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="拆除csapp二进制炸弹超详细的解析之phase_2">
-<meta name="twitter:description" content="概述接着继续解析。">
+<meta name="twitter:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_1 继续解析。">
+<meta name="twitter:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb2.png">
   
     <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
   
@@ -87,14 +89,101 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>接着继续解析。</p>
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>接着 拆除csapp二进制炸弹超详细的解析之phase_1 继续解析。</p>
 <a id="more"></a>
 
-<h1 id="phase-2-解析"><a href="#phase-2-解析" class="headerlink" title="phase_2 解析"></a>phase_2 解析</h1>
+<p><img src="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb2.png" alt="cgdb2截图"></p>
+<h1 id="phase-2-解析"><a href="#phase-2-解析" class="headerlink" title="phase_2 解析"></a>phase_2 解析</h1><p>同样执行si命令:</p>
+<pre><code> 96│ bomb.c:
+ 97│ 81          input = read_line();
+ 98├──&gt; 0x0000000000400e4e &lt;+174&gt;:   callq  0x40149e &lt;read_line&gt;
+ 99│
+100│ 82          phase_2(input);
+101│    0x0000000000400e53 &lt;+179&gt;:   mov    %rax,%rdi
+102│    0x0000000000400e56 &lt;+182&gt;:   callq  0x400efc &lt;phase_2&gt;
+103│
+104│ 83          phase_defused();
+105│    0x0000000000400e5b &lt;+187&gt;:   callq  0x4015c4 &lt;phase_defused&gt;
+
+
+
+                      Figure 2.1</code></pre><p>在 Figure 2.1 中第98行调用 read_line 函数用以读取我们的输入，同样地返回值为%rax，里面存储了我们的输入内容，可以用下面的命令查看:</p>
+<pre><code>(gdb) x /s $rax
+0x6037d0 &lt;input_strings+80&gt;:    &quot;I&apos;m in phase_2 for test&quot;</code></pre><p>可以看到我们输入的内容是 I’m in phase_2 for test</p>
+<p>接下来执行si命令，开始执行 Figure 2.1 中的第101行代码，执行结果是把%rax中的值复制到%rdi，%rdi一般作为第1个参数。</p>
+<p>然后进入第102行代码里面:</p>
+<pre><code> 1│ Dump of assembler code for function phase_2:
+ 2├──&gt; 0x0000000000400efc &lt;+0&gt;:     push   %rbp
+ 3│    0x0000000000400efd &lt;+1&gt;:     push   %rbx
+ 4│    0x0000000000400efe &lt;+2&gt;:     sub    $0x28,%rsp
+ 5│    0x0000000000400f02 &lt;+6&gt;:     mov    %rsp,%rsi
+ 6│    0x0000000000400f05 &lt;+9&gt;:     callq  0x40145c &lt;read_six_numbers&gt;
+ 7│    0x0000000000400f0a &lt;+14&gt;:    cmpl   $0x1,(%rsp)
+ 8│    0x0000000000400f0e &lt;+18&gt;:    je     0x400f30 &lt;phase_2+52&gt;
+ 9│    0x0000000000400f10 &lt;+20&gt;:    callq  0x40143a &lt;explode_bomb&gt;
+10│    0x0000000000400f15 &lt;+25&gt;:    jmp    0x400f30 &lt;phase_2+52&gt;
+11│    0x0000000000400f17 &lt;+27&gt;:    mov    -0x4(%rbx),%eax
+12│    0x0000000000400f1a &lt;+30&gt;:    add    %eax,%eax
+13│    0x0000000000400f1c &lt;+32&gt;:    cmp    %eax,(%rbx)
+14│    0x0000000000400f1e &lt;+34&gt;:    je     0x400f25 &lt;phase_2+41&gt;
+15│    0x0000000000400f20 &lt;+36&gt;:    callq  0x40143a &lt;explode_bomb&gt;
+16│    0x0000000000400f25 &lt;+41&gt;:    add    $0x4,%rbx
+17│    0x0000000000400f29 &lt;+45&gt;:    cmp    %rbp,%rbx
+18│    0x0000000000400f2c &lt;+48&gt;:    jne    0x400f17 &lt;phase_2+27&gt;
+19│    0x0000000000400f2e &lt;+50&gt;:    jmp    0x400f3c &lt;phase_2+64&gt;
+20│    0x0000000000400f30 &lt;+52&gt;:    lea    0x4(%rsp),%rbx
+21│    0x0000000000400f35 &lt;+57&gt;:    lea    0x18(%rsp),%rbp
+22│    0x0000000000400f3a &lt;+62&gt;:    jmp    0x400f17 &lt;phase_2+27&gt;
+23│    0x0000000000400f3c &lt;+64&gt;:    add    $0x28,%rsp
+24│    0x0000000000400f40 &lt;+68&gt;:    pop    %rbx
+25│    0x0000000000400f41 &lt;+69&gt;:    pop    %rbp
+26│    0x0000000000400f42 &lt;+70&gt;:    retq
+27│ End of assembler dump.
+
+
+
+                     Figure 2.2</code></pre><p>在 Figure 2.2 中第2行和第3行的两个的push作用是把%rbp和%rbx两个寄存器中的值入栈，起到了”保护现场”的作用。</p>
+<p>第4行的 sub    $0x28,%rsp 中的十六进制0x28相对应的十进制值为40,是编译器计算后觉得够用一般情况下默认设置的大小。</p>
+<p>第5行把栈顶rsp复制到rsi中。</p>
+<p>第6行 read_six_numbers 函数读入6个数，当我们执行到第6行 callq  0x40145c <read_six_numbers> 时，再执行si命令，跟进去会显示:</read_six_numbers></p>
+<pre><code> 1│ Dump of assembler code for function read_six_numbers:
+ 2├──&gt; 0x000000000040145c &lt;+0&gt;:     sub    $0x18,%rsp
+ 3│    0x0000000000401460 &lt;+4&gt;:     mov    %rsi,%rdx
+ 4│    0x0000000000401463 &lt;+7&gt;:     lea    0x4(%rsi),%rcx
+ 5│    0x0000000000401467 &lt;+11&gt;:    lea    0x14(%rsi),%rax
+ 6│    0x000000000040146b &lt;+15&gt;:    mov    %rax,0x8(%rsp)
+ 7│    0x0000000000401470 &lt;+20&gt;:    lea    0x10(%rsi),%rax
+ 8│    0x0000000000401474 &lt;+24&gt;:    mov    %rax,(%rsp)
+ 9│    0x0000000000401478 &lt;+28&gt;:    lea    0xc(%rsi),%r9
+10│    0x000000000040147c &lt;+32&gt;:    lea    0x8(%rsi),%r8
+11│    0x0000000000401480 &lt;+36&gt;:    mov    $0x4025c3,%esi
+12│    0x0000000000401485 &lt;+41&gt;:    mov    $0x0,%eax
+13│    0x000000000040148a &lt;+46&gt;:    callq  0x400bf0 &lt;__isoc99_sscanf@plt&gt;
+14│    0x000000000040148f &lt;+51&gt;:    cmp    $0x5,%eax
+15│    0x0000000000401492 &lt;+54&gt;:    jg     0x401499 &lt;read_six_numbers+61&gt;
+16│    0x0000000000401494 &lt;+56&gt;:    callq  0x40143a &lt;explode_bomb&gt;
+17│    0x0000000000401499 &lt;+61&gt;:    add    $0x18,%rsp
+18│    0x000000000040149d &lt;+65&gt;:    retq
+19│ End of assembler dump.
+ ~│
+
+
+
+                      Figure 2.3</code></pre><p>可以看到在 Figure 2.3 中第14行 cmp    $0x5,%eax ，即如果第13行 callq  0x400bf0 &lt;__isoc99_sscanf@plt&gt; 函数的返回值eax如果<br>大于5，即第15行 jg     0x401499 &lt;read_six_numbers+61&gt; 会执行，jg表示大于执行，所以会跳转到第17行 add    $0x18,%rsp ，<br>完成栈平衡。</p>
+<p>由于我们输入的内容是 I’m in phase_2 for test ，个人刚好为5,所以我们需要修改我们输入的内容，鉴于 Figure 2.2 中第7行<br>cmpl   $0x1,(%rsp)，这次我们把我们输入的6个数字都修改为1，再次重新运行我们的程序，当我们运行到 Figure 2.2 中第6行<br>read_six_numbers函数时，执行si命令，到达第7行，此时我们查看以rsp为起点连续内存中存储的6个数:</p>
+<pre><code>(gdb) p $rsp
+$1 = (void *) 0x7fffffffdda0
+(gdb) x /6wd $rsp
+0x7fffffffdda0: 1       1       1       1
+0x7fffffffddb0: 1       1</code></pre><p>继续执行 Figure 2.2 中的代码，第7行把1和(%rsp)里面保存的值进行比较，第8行如果相等的话程序跳到第20行<br>执行 lea    0x4(%rsp),%rbx ，第20行lea的作用是取地址而不是取地址里面保存的值，所以第20行的效果是取rsp的地址加4字节的值放入<br>rbx寄存器中，接下来执行第21行 lea    0x18(%rsp),%rbp ，其中十六进制0x18相对应的十进制值为24, 即24字节，一个整数占4个字节，<br>所以24 / 4 = 6, 刚好是6个数。</p>
+<p>接下来的代码是 crack the code的关键。在 Figure 2.2 中第7行 cmpl   $0x1,(%rsp) 比较rsp地址中存储的值是否为1,第8行中的je表示<br>相等时跳转到第20行执行 lea    0x4(%rsp),%rbx ，rsp的地址加上4字节的大小得到的地址复制i到rbx，第21行 lea    0x18(%rsp),%rbp<br>表示把最后一个数的地址复制给rbp，第22行jmp表示无条件跳转，现在跳转到第11行，执行 mov    -0x4(%rbx),%eax ，相当与把rbx减去<br>4字节的大小的地址里面的值复制到eax,即把rsp的值复制到eax中，因为在第7行rsp的值为1,然后跳转到第20行，rsp+4后的地址复制给了<br>rbx，现在rbx又减去4，所以此时即把rsp的值复制到eax中。eax里面的值为1,第12行相当与eax的值乘以2，然后拿eax里面的值和rbx里面<br>存放的值比较，看看它们是否相等，注意上面我们刚提到rbx的值为rsp加4,即rbx的地址为第2个数的地址。</p>
+<p>如果第1个数乘以2等于第2个数，那么执行第14行，然后跳转到第16行执行 add    $0x4,%rbx ，即rbx的值更新为原来的rbx加4,也就是<br>说rbx现在的值为第3个数的地址，执行第17行再次比较 rbp和rbx的值是否相等，如果不相等则再次跳转到第11行，重复执行，直到<br>rbp和rbx的值不相等，总共循环执行6次，由第1个数乘以2,后面的数等于前面的一个数乘以2,到第6个数为止。</p>
+<p>所以我们得到本关卡的通关证为 1 2 4 8 16 32</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/09/09/拆除csapp二进制炸弹超详细的解析之phase_2/" data-id="ck0am6h1y001fmjfx3f8o03vb" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/09/09/拆除csapp二进制炸弹超详细的解析之phase_2/" data-id="ck0ampg9s001fw7fxmm8lvslj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/汇编与反汇编/">汇编与反汇编</a></li></ul>
