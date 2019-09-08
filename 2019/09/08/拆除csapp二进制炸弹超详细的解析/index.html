@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>拆除csapp二进制炸弹超详细的解析 | mkzpd</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述以前学习了汇编语言，为了加深巩固，写一个拆除csapp二进制炸弹超详细的解析答案，希望可以帮助其他人吧！">
+<meta name="keywords" content="汇编与反汇编">
+<meta property="og:type" content="article">
+<meta property="og:title" content="拆除csapp二进制炸弹超详细的解析">
+<meta property="og:url" content="http://yoursite.com/2019/09/08/拆除csapp二进制炸弹超详细的解析/index.html">
+<meta property="og:site_name" content="mkzpd">
+<meta property="og:description" content="概述以前学习了汇编语言，为了加深巩固，写一个拆除csapp二进制炸弹超详细的解析答案，希望可以帮助其他人吧！">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb.png">
+<meta property="og:updated_time" content="2019-09-08T06:15:31.716Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="拆除csapp二进制炸弹超详细的解析">
+<meta name="twitter:description" content="概述以前学习了汇编语言，为了加深巩固，写一个拆除csapp二进制炸弹超详细的解析答案，希望可以帮助其他人吧！">
+<meta name="twitter:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb.png">
+  
+    <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">mkzpd</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-拆除csapp二进制炸弹超详细的解析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/08/拆除csapp二进制炸弹超详细的解析/" class="article-date">
+  <time datetime="2019-09-08T03:43:35.000Z" itemprop="datePublished">2019-09-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      拆除csapp二进制炸弹超详细的解析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>以前学习了汇编语言，为了加深巩固，写一个拆除csapp二进制炸弹超详细的解析答案，希望可以帮助其他人吧！</p>
+<a id="more"></a>
+
+<h2 id="实验所需工具"><a href="#实验所需工具" class="headerlink" title="实验所需工具"></a>实验所需工具</h2><p>首先从 <a href="http://csapp.cs.cmu.edu/im/labs/bomblab.tar" target="_blank" rel="noopener">http://csapp.cs.cmu.edu/im/labs/bomblab.tar</a> 下载所需的代码。</p>
+<p>objdump 这个反汇编器很强大，但是对于这个实验，我们可以不用使用它，因为有一个调试代码神器gdb,可以使用gdb,但有一个更好用的<br>gdb加强版，cgdb,对我们使用cgdb,这个可以实时的指出我们在调试哪一行指令。</p>
+<p>cgdb的安装很简单,参考 <a href="https://cgdb.github.io/" target="_blank" rel="noopener">https://cgdb.github.io/</a> 使用cgdb需要掌握一些常用命令。</p>
+<p>操作系统为linux。</p>
+<p>工具介绍完毕，接下来开始crack the code!</p>
+<h1 id="phase-1解析"><a href="#phase-1解析" class="headerlink" title="phase_1解析"></a>phase_1解析</h1><p><img src="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb.png" alt="cgdb截图"></p>
+<p>首先在bomb二进制目录中 touch my-input 创建一个文件, my-input里面随便输入一些东西即可，然后r &lt; my-input 开始运行起来</p>
+<p>首先执行si命令</p>
+<pre><code>80│ bomb.c:
+81│ 73          input = read_line();             /* Get input                   */
+82│    0x0000000000400e32 &lt;+146&gt;:   callq  0x40149e &lt;read_line&gt;
+83│
+84│ 74          phase_1(input);                  /* Run the phase               */
+85├──&gt; 0x0000000000400e37 &lt;+151&gt;:   mov    %rax,%rdi
+86│    0x0000000000400e3a &lt;+154&gt;:   callq  0x400ee0 &lt;phase_1&gt;
+87│
+88│ 75          phase_defused();                 /* Drat!  They figured it out!
+89│    0x0000000000400e3f &lt;+159&gt;:   callq  0x4015c4 &lt;phase_defused&gt;
+
+
+
+                            Figure 1.1</code></pre><p>Figure 1.1第82行首先调用 read_line() 函数，函数的返回值存储在%rax中，即我们的输入存储在%rax中。</p>
+<p>用下列命令可以查看我们的输入内容:</p>
+<pre><code>(gdb) x /s $rax
+0x603780 &lt;input_strings&gt;:       &quot;you are phase_1 !!!&quot;</code></pre><p>在第85行中，把%rax的值复制到%rdi中。然后第86行调用<phase_1>，我们跟进去看看</phase_1></p>
+<pre><code> 1│ Dump of assembler code for function phase_1:
+ 2├──&gt; 0x0000000000400ee0 &lt;+0&gt;:     sub    $0x8,%rsp
+ 3│    0x0000000000400ee4 &lt;+4&gt;:     mov    $0x402400,%esi
+ 4│    0x0000000000400ee9 &lt;+9&gt;:     callq  0x401338 &lt;strings_not_equal&gt;
+ 5│    0x0000000000400eee &lt;+14&gt;:    test   %eax,%eax
+ 6│    0x0000000000400ef0 &lt;+16&gt;:    je     0x400ef7 &lt;phase_1+23&gt;
+ 7│    0x0000000000400ef2 &lt;+18&gt;:    callq  0x40143a &lt;explode_bomb&gt;
+ 8│    0x0000000000400ef7 &lt;+23&gt;:    add    $0x8,%rsp
+ 9│    0x0000000000400efb &lt;+27&gt;:    retq
+10│ End of assembler dump.
+
+
+
+                            Figure 1.2</code></pre><p>可以看到 Figure 1.2中 第2行栈地址减少8,刚好是两个4字节的大小，第3行把一个常量地址的值复制到%esi，特别要注意0x402400这个常<br>量地址，如果了解游戏外挂制作的话，分析游戏首先要找基地址，找不到基地址下面的就没法谈了，所谓的基地址就是在游戏设计开发中<br>写死的值，一般为全局常量，是不会发生改变的，即使在游戏重新启动的情况下。所以可以大胆地猜测这个$0x402400里面存放的值就是<br>本关卡的答案，可以看一下里面存放的值:</p>
+<pre><code>(gdb) x /s 0x402400
+0x402400:       &quot;Border relations with Canada have never been better.&quot;</code></pre><p>可以看到里面是字符 Border relations with Canada have never been better. 可能就是我们想要的答案，但这仅仅是猜测，还需要我们去验证。</p>
+<p>第4行调用 strings_not_equal 去判断我们输入的字符串是否和程序中写死的全局变量中存放的字符串相等，如果相等则eax的值等于0,接<br>下来的第5行判断eax是否等于0, je表示相等则执行0x400ef7处的代码，第8行 add    $0x8,%rsp 的作用是恢复栈平衡，恢复栈平衡一般有<br>两种方法，一种是内平衡，一种是外平衡。第8行用的是内平衡，即在函数调用中恢复栈平衡叫做内平衡，在函数调用之外恢复栈平衡叫做<br>外平衡。</p>
+<p>基于上述的推理，我们可以大胆的猜测: 判断函数 strings_not_equal 中用到了%rdi和%esi,其中%rdi是存储我们输入的内容，%esi是本关卡<br>的答案，如果我们是输入和本关卡中预先设置的答案一样则炸弹不会爆炸，即 Figure 1.2 第4行的返回值eax为0.</p>
+<p>当你进入strings_not_equal中时会发现最前面的几行如下:</p>
+<pre><code>1│ Dump of assembler code for function strings_not_equal:
+2├──&gt; 0x0000000000401338 &lt;+0&gt;:     push   %r12
+3│    0x000000000040133a &lt;+2&gt;:     push   %rbp
+4│    0x000000000040133b &lt;+3&gt;:     push   %rbx
+5│    0x000000000040133c &lt;+4&gt;:     mov    %rdi,%rbx
+6│    0x000000000040133f &lt;+7&gt;:     mov    %rsi,%rbp
+7│    0x0000000000401342 &lt;+10&gt;:    callq  0x40131b &lt;string_length&gt;
+.......
+.......
+.......
+
+
+
+                     Figure 1.3</code></pre><p>在Figure 1.3中第5行的 mov    %rdi,%rbx  和第6行 mov    %rsi,%rbp，再加上第7行，现在完全可以肯定我们上面的推论都是正确的。</p>
+<p>至此得到 phase_1 的答案为Border relations with Canada have never been better.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/08/拆除csapp二进制炸弹超详细的解析/" data-id="ck0aghwxl0000vffx74xxr6v5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/汇编与反汇编/">汇编与反汇编</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/08/28/一个可以避免dns查询污染的工具/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">一个可以避免dns查询污染的工具</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dns/">dns</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/汇编与反汇编/">汇编与反汇编</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统编程/">系统编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Leetcode/" style="font-size: 15px;">Leetcode</a> <a href="/tags/TCP-IP/" style="font-size: 20px;">TCP/IP</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a> <a href="/tags/汇编与反汇编/" style="font-size: 10px;">汇编与反汇编</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/系统编程/" style="font-size: 17.5px;">系统编程</a> <a href="/tags/网络编程/" style="font-size: 12.5px;">网络编程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/08/拆除csapp二进制炸弹超详细的解析/">拆除csapp二进制炸弹超详细的解析</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/28/一个可以避免dns查询污染的工具/">一个可以避免dns查询污染的工具</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/10/fork的两种用法/">fork的两种用法</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/04/利用IP地址和子网掩码计算网络号和主机号/">利用IP地址和子网掩码计算网络号和主机号</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/03/网际协议IP学习笔记/">网际协议IP学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 mkzpd<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
