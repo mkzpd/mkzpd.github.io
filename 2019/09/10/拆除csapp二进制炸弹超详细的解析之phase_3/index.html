@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>拆除csapp二进制炸弹超详细的解析之phase_3 | mkzpd</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_1 继续解析phase_3 。">
+<meta name="keywords" content="汇编与反汇编">
+<meta property="og:type" content="article">
+<meta property="og:title" content="拆除csapp二进制炸弹超详细的解析之phase_3">
+<meta property="og:url" content="http://yoursite.com/2019/09/10/拆除csapp二进制炸弹超详细的解析之phase_3/index.html">
+<meta property="og:site_name" content="mkzpd">
+<meta property="og:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_1 继续解析phase_3 。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb3.png">
+<meta property="og:updated_time" content="2019-09-09T03:58:21.175Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="拆除csapp二进制炸弹超详细的解析之phase_3">
+<meta name="twitter:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_1 继续解析phase_3 。">
+<meta name="twitter:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb3.png">
+  
+    <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">mkzpd</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-拆除csapp二进制炸弹超详细的解析之phase_3" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/10/拆除csapp二进制炸弹超详细的解析之phase_3/" class="article-date">
+  <time datetime="2019-09-10T02:35:49.000Z" itemprop="datePublished">2019-09-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      拆除csapp二进制炸弹超详细的解析之phase_3
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>接着 拆除csapp二进制炸弹超详细的解析之phase_1 继续解析phase_3 。</p>
+<a id="more"></a>
+
+<h1 id="phase-3解析"><a href="#phase-3解析" class="headerlink" title="phase_3解析"></a>phase_3解析</h1><p><img src="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb3.png" alt="cgdb3截图"></p>
+<p>同样地首先执行si命令:</p>
+<pre><code>112│ bomb.c:
+113│ 88          input = read_line();
+114├──&gt; 0x0000000000400e6a &lt;+202&gt;:   callq  0x40149e &lt;read_line&gt;
+115│
+116│ 89          phase_3(input);
+117│    0x0000000000400e6f &lt;+207&gt;:   mov    %rax,%rdi
+118│    0x0000000000400e72 &lt;+210&gt;:   callq  0x400f43 &lt;phase_3&gt;
+119│
+120│ 90          phase_defused();
+121│    0x0000000000400e77 &lt;+215&gt;:   callq  0x4015c4 &lt;phase_defused&gt;
+
+
+
+                     Figure 3.1</code></pre><p>Figure 3.1 中第114行读取我们的输入，返回值rax在第117行被复制给rdi.可以查看我们输入的内容:</p>
+<pre><code>(gdb) x /s $rax
+0x603820 &lt;input_strings+160&gt;:   &quot;I&apos;m in phase_3 for test&quot;</code></pre><p>我们输入的内容是 I’m in phase_3 for test ,就是这个，没错。</p>
+<p>接下来si命令进入第118行:</p>
+<pre><code> 1│ Dump of assembler code for function phase_3:
+ 2├──&gt; 0x0000000000400f43 &lt;+0&gt;:     sub    $0x18,%rsp
+ 3│    0x0000000000400f47 &lt;+4&gt;:     lea    0xc(%rsp),%rcx
+ 4│    0x0000000000400f4c &lt;+9&gt;:     lea    0x8(%rsp),%rdx
+ 5│    0x0000000000400f51 &lt;+14&gt;:    mov    $0x4025cf,%esi
+ 6│    0x0000000000400f56 &lt;+19&gt;:    mov    $0x0,%eax
+ 7│    0x0000000000400f5b &lt;+24&gt;:    callq  0x400bf0 &lt;__isoc99_sscanf@plt&gt;
+ 8│    0x0000000000400f60 &lt;+29&gt;:    cmp    $0x1,%eax
+ 9│    0x0000000000400f63 &lt;+32&gt;:    jg     0x400f6a &lt;phase_3+39&gt;
+10│    0x0000000000400f65 &lt;+34&gt;:    callq  0x40143a &lt;explode_bomb&gt;
+11│    0x0000000000400f6a &lt;+39&gt;:    cmpl   $0x7,0x8(%rsp)
+12│    0x0000000000400f6f &lt;+44&gt;:    ja     0x400fad &lt;phase_3+106&gt;
+13│    0x0000000000400f71 &lt;+46&gt;:    mov    0x8(%rsp),%eax
+14│    0x0000000000400f75 &lt;+50&gt;:    jmpq   *0x402470(,%rax,8)
+15│    0x0000000000400f7c &lt;+57&gt;:    mov    $0xcf,%eax
+16│    0x0000000000400f81 &lt;+62&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+17│    0x0000000000400f83 &lt;+64&gt;:    mov    $0x2c3,%eax
+18│    0x0000000000400f88 &lt;+69&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+19│    0x0000000000400f8a &lt;+71&gt;:    mov    $0x100,%eax
+20│    0x0000000000400f8f &lt;+76&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+21│    0x0000000000400f91 &lt;+78&gt;:    mov    $0x185,%eax
+22│    0x0000000000400f96 &lt;+83&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+23│    0x0000000000400f98 &lt;+85&gt;:    mov    $0xce,%eax
+24│    0x0000000000400f9d &lt;+90&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+25│    0x0000000000400f9f &lt;+92&gt;:    mov    $0x2aa,%eax
+26│    0x0000000000400fa4 &lt;+97&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+27│    0x0000000000400fa6 &lt;+99&gt;:    mov    $0x147,%eax
+28│    0x0000000000400fab &lt;+104&gt;:   jmp    0x400fbe &lt;phase_3+123&gt;
+29│    0x0000000000400fad &lt;+106&gt;:   callq  0x40143a &lt;explode_bomb&gt;
+30│    0x0000000000400fb2 &lt;+111&gt;:   mov    $0x0,%eax
+31│    0x0000000000400fb7 &lt;+116&gt;:   jmp    0x400fbe &lt;phase_3+123&gt;
+32│    0x0000000000400fb9 &lt;+118&gt;:   mov    $0x137,%eax
+33│    0x0000000000400fbe &lt;+123&gt;:   cmp    0xc(%rsp),%eax
+34│    0x0000000000400fc2 &lt;+127&gt;:   je     0x400fc9 &lt;phase_3+134&gt;
+35│    0x0000000000400fc4 &lt;+129&gt;:   callq  0x40143a &lt;explode_bomb&gt;
+36│    0x0000000000400fc9 &lt;+134&gt;:   add    $0x18,%rsp
+37│    0x0000000000400fcd &lt;+138&gt;:   retq   
+38│ End of assembler dump.
+
+
+
+                   Figure 3.2</code></pre><p>在 Figure 3.2 中第1行十六进制0x18等于十进制24, 所以第1行的结果是在栈中开辟24字节的空间。</p>
+<p>接下来的第3行lea指令把rsp地址加十六进制c(十进制12)的结果放入rcx,注意是把地址编号放入rcx中，不是把地址编号里面的值放入rcx。<br>同样地第4行把rsp地址的值加上8的结果放入rdx中。</p>
+<p>接下来的第5行 mov    $0x4025cf,%esi ，又一次出现了常量地址，出现常量地址尤其要注意，看一下0x4025cf里面的内容:</p>
+<pre><code>(gdb) x /s 0x4025cf
+0x4025cf:       &quot;%d %d&quot;</code></pre><p>第6行把eax的值置为0,第7行出现了sscanf调用，刚好和第5行的地址为$0x4025cf里面的内容相对应。</p>
+<p>接下来的第8行，第9行，第10行比较重要了，因为牵涉到炸弹爆炸。第9行的jg在eax的值大于1时跳转到第10行explode_bomb函数的下一<br>行，刚好完美地跳过炸弹爆炸函数。结合第5行地址0x4025cf里面的两个%d，eax的值已经在第6行设置为0了，我们可以猜测sscanf的返回<br>值eax表示输入的数字个数，如果输入的数字个数少于1个就触发炸弹爆炸机制。</p>
+<p>第11行的 cmpl   $0x7,0x8(%rsp) ，比较第1个参数和7的大小，第12行的ja在第1个参数超过7时跳转到第29行执行炸弹爆炸函数，所以<br>第1个输入的数大小不能超过7，当小于7时执行第13行 mov    0x8(%rsp),%eax ，把第1个参数的值复制到eax中，第14行执行间接跳转<br>jmpq   *0x402470(,%rax,8) ，跳转的地址根据公式计算，即dst = 0x402470 + 8 * rax 。</p>
+<p>接下来的行到结尾出现了8次 jmp    0x400fbe &lt;phase_3+123&gt; ，很明显这就是c语言switch中的case语句，多路选择，只执行其中的一个。</p>
+<p>除去第30行的 mov    $0x0,%eax ，和后面一行的jmp语句，还有7个 jmp    0x400fbe &lt;phase_3+123&gt; ，结合前面说的第1个参数要小于7,<br>所以我们有了获取本关卡的答案思路，具体如下:</p>
+<p>首先检查以0x402470处为起始地址的连续8个内存地址里面的内容:</p>
+<pre><code>(gdb) x /8g 0x402470
+0x402470:       0x0000000000400f7c      0x0000000000400fb9
+0x402480:       0x0000000000400f83      0x0000000000400f8a
+0x402490:       0x0000000000400f91      0x0000000000400f98
+0x4024a0:       0x0000000000400f9f      0x0000000000400fa6
+(gdb)</code></pre><p>输出的8个十六进制刚好对应下面的mov指令前的地址:</p>
+<pre><code>14│    0x0000000000400f75 &lt;+50&gt;:    jmpq   *0x402470(,%rax,8)
+15│    0x0000000000400f7c &lt;+57&gt;:    mov    $0xcf,%eax              &lt;&lt;&lt;----------- 0x402470的值,即第一个参数为0
+16│    0x0000000000400f81 &lt;+62&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+17│    0x0000000000400f83 &lt;+64&gt;:    mov    $0x2c3,%eax             &lt;&lt;&lt;------------0x402480的值,即第一个参数为2
+18│    0x0000000000400f88 &lt;+69&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+19│    0x0000000000400f8a &lt;+71&gt;:    mov    $0x100,%eax             &lt;&lt;&lt;------------0x402488的值,即第一个参数为3
+20│    0x0000000000400f8f &lt;+76&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+21│    0x0000000000400f91 &lt;+78&gt;:    mov    $0x185,%eax             &lt;&lt;&lt;------------0x402490的值,即第一个参数为4
+22│    0x0000000000400f96 &lt;+83&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+23│    0x0000000000400f98 &lt;+85&gt;:    mov    $0xce,%eax              &lt;&lt;&lt;------------0x402498的值,即第一个参数为5
+24│    0x0000000000400f9d &lt;+90&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+25│    0x0000000000400f9f &lt;+92&gt;:    mov    $0x2aa,%eax             &lt;&lt;&lt;------------0x4024a0的值,即第一个参数为6
+26│    0x0000000000400fa4 &lt;+97&gt;:    jmp    0x400fbe &lt;phase_3+123&gt;
+27│    0x0000000000400fa6 &lt;+99&gt;:    mov    $0x147,%eax             &lt;&lt;&lt;------------0x4024a8的值,即第一个参数为7
+28│    0x0000000000400fab &lt;+104&gt;:   jmp    0x400fbe &lt;phase_3+123&gt;
+29│    0x0000000000400fad &lt;+106&gt;:   callq  0x40143a &lt;explode_bomb&gt;
+30│    0x0000000000400fb2 &lt;+111&gt;:   mov    $0x0,%eax
+31│    0x0000000000400fb7 &lt;+116&gt;:   jmp    0x400fbe &lt;phase_3+123&gt;
+32│    0x0000000000400fb9 &lt;+118&gt;:   mov    $0x137,%eax             &lt;&lt;&lt;----------- 0x402470的值,即第一个参数为1
+33│    0x0000000000400fbe &lt;+123&gt;:   cmp    0xc(%rsp),%eax
+34│    0x0000000000400fc2 &lt;+127&gt;:   je     0x400fc9 &lt;phase_3+134&gt;
+35│    0x0000000000400fc4 &lt;+129&gt;:   callq  0x40143a &lt;explode_bomb&gt;
+36│    0x0000000000400fc9 &lt;+134&gt;:   add    $0x18,%rsp
+37│    0x0000000000400fcd &lt;+138&gt;:   retq
+38│ End of assembler dump.</code></pre><p>第15行0xcf十进制为207,    第32行0x137十进制为311,    第17行0x2c3十进制为707,    第19行0x100十进制为256,<br>第21行0x185十进制为389,   第23行0xce十进制为206,     第25行0x2aa十进制为682,    第27行0x147十进制为327。</p>
+<p>所以可以得到本关卡的答案了:</p>
+<p>一共是8组: (0,207), (1,311), (2,707), (3,256), (4,389), (5,206), (6,682),(7,327)</p>
+<p>以上任意一组组合就是答案了，比如 3 256</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/10/拆除csapp二进制炸弹超详细的解析之phase_3/" data-id="ck0bvdc0c001awofxjgydioiy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/汇编与反汇编/">汇编与反汇编</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/09/09/拆除csapp二进制炸弹超详细的解析之phase_2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">拆除csapp二进制炸弹超详细的解析之phase_2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dns/">dns</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/汇编与反汇编/">汇编与反汇编</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统编程/">系统编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Leetcode/" style="font-size: 15px;">Leetcode</a> <a href="/tags/TCP-IP/" style="font-size: 20px;">TCP/IP</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a> <a href="/tags/汇编与反汇编/" style="font-size: 12.5px;">汇编与反汇编</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/系统编程/" style="font-size: 17.5px;">系统编程</a> <a href="/tags/网络编程/" style="font-size: 12.5px;">网络编程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/10/拆除csapp二进制炸弹超详细的解析之phase_3/">拆除csapp二进制炸弹超详细的解析之phase_3</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/拆除csapp二进制炸弹超详细的解析之phase_2/">拆除csapp二进制炸弹超详细的解析之phase_2</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/08/拆除csapp二进制炸弹超详细的解析之phase_1/">拆除csapp二进制炸弹超详细的解析之phase_1</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/28/一个可以避免dns查询污染的工具/">一个可以避免dns查询污染的工具</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/10/fork的两种用法/">fork的两种用法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 mkzpd<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
