@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>拆除csapp二进制炸弹超详细的解析之phase_4 | mkzpd</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_3 继续解析phase_4 。">
+<meta name="keywords" content="汇编与反汇编">
+<meta property="og:type" content="article">
+<meta property="og:title" content="拆除csapp二进制炸弹超详细的解析之phase_4">
+<meta property="og:url" content="http://yoursite.com/2019/09/11/拆除csapp二进制炸弹超详细的解析之phase_4/index.html">
+<meta property="og:site_name" content="mkzpd">
+<meta property="og:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_3 继续解析phase_4 。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb4.png">
+<meta property="og:updated_time" content="2019-09-09T11:06:18.102Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="拆除csapp二进制炸弹超详细的解析之phase_4">
+<meta name="twitter:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_3 继续解析phase_4 。">
+<meta name="twitter:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb4.png">
+  
+    <link rel="alternate" href="/atom.xml" title="mkzpd" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">mkzpd</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-拆除csapp二进制炸弹超详细的解析之phase_4" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/11/拆除csapp二进制炸弹超详细的解析之phase_4/" class="article-date">
+  <time datetime="2019-09-11T07:18:28.000Z" itemprop="datePublished">2019-09-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      拆除csapp二进制炸弹超详细的解析之phase_4
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>接着 拆除csapp二进制炸弹超详细的解析之phase_3 继续解析phase_4 。</p>
+<a id="more"></a>
+
+<h1 id="phase-4解析"><a href="#phase-4解析" class="headerlink" title="phase_4解析"></a>phase_4解析</h1><p><img src="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb4.png" alt="cgdb4截图"></p>
+<p>同样地首先执行si命令:</p>
+<pre><code>128│ bomb.c:
+129│ 94          input = read_line();
+130├──&gt; 0x0000000000400e86 &lt;+230&gt;:   callq  0x40149e &lt;read_line&gt;
+131│
+132│ 95          phase_4(input);
+133│    0x0000000000400e8b &lt;+235&gt;:   mov    %rax,%rdi
+134│    0x0000000000400e8e &lt;+238&gt;:   callq  0x40100c &lt;phase_4&gt;
+135│
+136│ 96          phase_defused();
+137│    0x0000000000400e93 &lt;+243&gt;:   callq  0x4015c4 &lt;phase_defused&gt;
+
+
+
+                    Figure 4.1</code></pre><p>Figure 4.1中第130行读取我们的输入，返回值rax在第133行被复制给rdi.可以查看我们输入的内容:                        </p>
+<pre><code>(gdb) x /s $rax
+0x603870 &lt;input_strings+240&gt;:   &quot;I&apos;m in phase_4 for test&quot;</code></pre><p>我们输入的内容是 I’m in phase_4 for test ，确实是这样的。</p>
+<p>接下来si命令进入第134行:</p>
+<pre><code> 1│ Dump of assembler code for function phase_4:
+ 2├──&gt; 0x000000000040100c &lt;+0&gt;:     sub    $0x18,%rsp
+ 3│    0x0000000000401010 &lt;+4&gt;:     lea    0xc(%rsp),%rcx
+ 4│    0x0000000000401015 &lt;+9&gt;:     lea    0x8(%rsp),%rdx
+ 5│    0x000000000040101a &lt;+14&gt;:    mov    $0x4025cf,%esi
+ 6│    0x000000000040101f &lt;+19&gt;:    mov    $0x0,%eax
+ 7│    0x0000000000401024 &lt;+24&gt;:    callq  0x400bf0 &lt;__isoc99_sscanf@plt&gt;
+ 8│    0x0000000000401029 &lt;+29&gt;:    cmp    $0x2,%eax
+ 9│    0x000000000040102c &lt;+32&gt;:    jne    0x401035 &lt;phase_4+41&gt;
+10│    0x000000000040102e &lt;+34&gt;:    cmpl   $0xe,0x8(%rsp)
+11│    0x0000000000401033 &lt;+39&gt;:    jbe    0x40103a &lt;phase_4+46&gt;
+12│    0x0000000000401035 &lt;+41&gt;:    callq  0x40143a &lt;explode_bomb&gt;
+13│    0x000000000040103a &lt;+46&gt;:    mov    $0xe,%edx
+14│    0x000000000040103f &lt;+51&gt;:    mov    $0x0,%esi
+15│    0x0000000000401044 &lt;+56&gt;:    mov    0x8(%rsp),%edi
+16│    0x0000000000401048 &lt;+60&gt;:    callq  0x400fce &lt;func4&gt;
+17│    0x000000000040104d &lt;+65&gt;:    test   %eax,%eax
+18│    0x000000000040104f &lt;+67&gt;:    jne    0x401058 &lt;phase_4+76&gt;
+19│    0x0000000000401051 &lt;+69&gt;:    cmpl   $0x0,0xc(%rsp)
+20│    0x0000000000401056 &lt;+74&gt;:    je     0x40105d &lt;phase_4+81&gt;
+21│    0x0000000000401058 &lt;+76&gt;:    callq  0x40143a &lt;explode_bomb&gt;
+22│    0x000000000040105d &lt;+81&gt;:    add    $0x18,%rsp
+23│    0x0000000000401061 &lt;+85&gt;:    retq
+24│ End of assembler dump.
+
+
+
+                   Figure 4.2</code></pre><p>在Figure 4.2中，第2行的十六进制0x18的十进制值是24,所以第2行的结果是开辟24字节的内存空间。第3行把地址rsp本身的地址编号的<br>值加上十六进制c(十进制的12)的结果存放到rcx，第4行把地址rsp本身的地址编号的值加上十六进制8(十进制的8)的结果存放到rdx中。</p>
+<p>第5行指令中又一次出现了常量地址，之前说过常量地址里面的内容很重要，查看下0x4025cf里面的内容:</p>
+<pre><code>(gdb) x /s 0x4025cf
+0x4025cf:       &quot;%d %d&quot;</code></pre><p>第6行把eax的值设置为0,第7行调用sscanf函数读取输入，第8行判断sscanf的返回值eax是否等于2，如果不等于2,则跳转到第12行，触发<br>炸弹爆炸机制。这道题和phase_3相似，但比它简单一些。由于我们输入的内容是 I’m in phase_4 for test ，不是两个整数，所以我们<br>把我们的输入改为2 3，再次执行程序。</p>
+<p>当输入的内容刚好是两个整数时，执行第10行比较第1个参数和十六进制e(十进制14)的大小，当小于或者等于14时，炸弹不爆炸，执行<br>第13行，把十进制14复制给edx寄存器，第14行把esi的值置为0,第15行把第1个参数复制给edi，第16行调用func4函数，我们进入func4:</p>
+<pre><code> 1│ Dump of assembler code for function func4:
+ 2├──&gt; 0x0000000000400fce &lt;+0&gt;:     sub    $0x8,%rsp
+ 3│    0x0000000000400fd2 &lt;+4&gt;:     mov    %edx,%eax
+ 4│    0x0000000000400fd4 &lt;+6&gt;:     sub    %esi,%eax
+ 5│    0x0000000000400fd6 &lt;+8&gt;:     mov    %eax,%ecx
+ 6│    0x0000000000400fd8 &lt;+10&gt;:    shr    $0x1f,%ecx
+ 7│    0x0000000000400fdb &lt;+13&gt;:    add    %ecx,%eax
+ 8│    0x0000000000400fdd &lt;+15&gt;:    sar    %eax
+ 9│    0x0000000000400fdf &lt;+17&gt;:    lea    (%rax,%rsi,1),%ecx
+10│    0x0000000000400fe2 &lt;+20&gt;:    cmp    %edi,%ecx
+11│    0x0000000000400fe4 &lt;+22&gt;:    jle    0x400ff2 &lt;func4+36&gt;
+12│    0x0000000000400fe6 &lt;+24&gt;:    lea    -0x1(%rcx),%edx
+13│    0x0000000000400fe9 &lt;+27&gt;:    callq  0x400fce &lt;func4&gt;
+14│    0x0000000000400fee &lt;+32&gt;:    add    %eax,%eax
+15│    0x0000000000400ff0 &lt;+34&gt;:    jmp    0x401007 &lt;func4+57&gt;
+16│    0x0000000000400ff2 &lt;+36&gt;:    mov    $0x0,%eax
+17│    0x0000000000400ff7 &lt;+41&gt;:    cmp    %edi,%ecx
+18│    0x0000000000400ff9 &lt;+43&gt;:    jge    0x401007 &lt;func4+57&gt;
+19│    0x0000000000400ffb &lt;+45&gt;:    lea    0x1(%rcx),%esi
+20│    0x0000000000400ffe &lt;+48&gt;:    callq  0x400fce &lt;func4&gt;
+21│    0x0000000000401003 &lt;+53&gt;:    lea    0x1(%rax,%rax,1),%eax
+22│    0x0000000000401007 &lt;+57&gt;:    add    $0x8,%rsp
+23│    0x000000000040100b &lt;+61&gt;:    retq
+24│ End of assembler dump.
+
+
+
+            Figure 4.3</code></pre><p>在 Figure 4.3 中，第1行先开辟8字节空间，然后把edx里面的十进制14复制到eax，第4行从eax减去esi(十进制0)得到的结果放入eax中，<br>第5行把eax的值(现在为14)，复制到ecx中，第6行的shr是逻辑右移(sar是算术右移)，十六进制0x1f等于十进制31，ecx现在的值为十进制<br>14，二进制表示为1110，1110右移31位后变为0,即ecx里面现在是32个0,第7行的结果是eax现在为14,第8行的sar执行算术右移1位，即1110<br>右移1位，变为二进制的111(十进制为7)，现在eax的值变为7。第9行rax的值为7,rsi的值为0，所以ecx的值为7。</p>
+<p>上面提到edi里面存储的是我们的第一个参数，第10行比较ecx里面的值7和我们输入的第一个参数的大小，第11行jle表示如果7小于或等于<br>我们输入的第一个参数，则跳转到第16行，把eax设置为0,然后比较ecx和edi的大小，第18行的jge表示ecx大于或等于edi时跳转到第22行，<br>从func4这个函数返回，否则继续执行递归.由此我们可以得到第1个参数可以为7，如果第1个参数为7,则func4函数返回0。这时我们又回到<br>了phase_4函数的第17行，如下面的 Figure 4.4 所示:</p>
+<pre><code>15│    0x0000000000401044 &lt;+56&gt;:    mov    0x8(%rsp),%edi
+16│    0x0000000000401048 &lt;+60&gt;:    callq  0x400fce &lt;func4&gt;
+17│    0x000000000040104d &lt;+65&gt;:    test   %eax,%eax
+18│    0x000000000040104f &lt;+67&gt;:    jne    0x401058 &lt;phase_4+76&gt;
+19│    0x0000000000401051 &lt;+69&gt;:    cmpl   $0x0,0xc(%rsp)
+20│    0x0000000000401056 &lt;+74&gt;:    je     0x40105d &lt;phase_4+81&gt;
+21│    0x0000000000401058 &lt;+76&gt;:    callq  0x40143a &lt;explode_bomb&gt;
+22│    0x000000000040105d &lt;+81&gt;:    add    $0x18,%rsp
+23│    0x0000000000401061 &lt;+85&gt;:    retq
+24│ End of assembler dump.
+
+
+
+               Figure 4.4</code></pre><p>当我们的第一个参数是7时，func4的返回值eax为0，第18行的jne表示eax不等于0时，则跳转到 Figure 4.4 中的第21行，触发炸弹爆炸机制，<br>不过当第一个参数是7时，eax为0，不会触发炸弹爆炸机制，此时跳转到 Figure 4.4 中的第19行，判断第2个参数是否为0，如果第2个参数<br>等于0,则跳转到 Figure 4.4 中的第22行，接下来从phase_4中安全返回。</p>
+<p>所以我们得到本关卡的答案为 7 0</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/11/拆除csapp二进制炸弹超详细的解析之phase_4/" data-id="ck0caxkm90018omfxjhrvdh68" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/汇编与反汇编/">汇编与反汇编</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/09/10/拆除csapp二进制炸弹超详细的解析之phase_3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">拆除csapp二进制炸弹超详细的解析之phase_3</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Leetcode/">Leetcode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP-IP/">TCP/IP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dns/">dns</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/博客搭建/">博客搭建</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/汇编与反汇编/">汇编与反汇编</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/系统编程/">系统编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络编程/">网络编程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Leetcode/" style="font-size: 15px;">Leetcode</a> <a href="/tags/TCP-IP/" style="font-size: 20px;">TCP/IP</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a> <a href="/tags/汇编与反汇编/" style="font-size: 15px;">汇编与反汇编</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/系统编程/" style="font-size: 17.5px;">系统编程</a> <a href="/tags/网络编程/" style="font-size: 12.5px;">网络编程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/11/拆除csapp二进制炸弹超详细的解析之phase_4/">拆除csapp二进制炸弹超详细的解析之phase_4</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/10/拆除csapp二进制炸弹超详细的解析之phase_3/">拆除csapp二进制炸弹超详细的解析之phase_3</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/09/拆除csapp二进制炸弹超详细的解析之phase_2/">拆除csapp二进制炸弹超详细的解析之phase_2</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/08/拆除csapp二进制炸弹超详细的解析之phase_1/">拆除csapp二进制炸弹超详细的解析之phase_1</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/28/一个可以避免dns查询污染的工具/">一个可以避免dns查询污染的工具</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 mkzpd<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
