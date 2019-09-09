@@ -16,7 +16,7 @@
 <meta property="og:description" content="概述以前学习了汇编语言，为了加深巩固，写一个拆除csapp二进制炸弹超详细的解析答案，希望可以帮助其他人吧！">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb1.png">
-<meta property="og:updated_time" content="2019-09-08T09:40:21.626Z">
+<meta property="og:updated_time" content="2019-09-09T01:13:40.361Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="拆除csapp二进制炸弹超详细的解析之phase_1">
 <meta name="twitter:description" content="概述以前学习了汇编语言，为了加深巩固，写一个拆除csapp二进制炸弹超详细的解析答案，希望可以帮助其他人吧！">
@@ -133,7 +133,7 @@
                             Figure 1.2</code></pre><p>可以看到 Figure 1.2中 第2行栈地址减少8,刚好是两个4字节的大小，第3行把一个常量地址的值复制到%esi，特别要注意0x402400这个常<br>量地址，如果了解游戏外挂制作的话，分析游戏首先要找基地址，找不到基地址下面的就没法谈了，所谓的基地址就是在游戏设计开发中<br>写死的值，一般为全局常量，是不会发生改变的，即使在游戏重新启动的情况下。所以可以大胆地猜测这个$0x402400里面存放的值就是<br>本关卡的答案，可以看一下里面存放的值:</p>
 <pre><code>(gdb) x /s 0x402400
 0x402400:       &quot;Border relations with Canada have never been better.&quot;</code></pre><p>可以看到里面是字符 Border relations with Canada have never been better. 可能就是我们想要的答案，但这仅仅是猜测，还需要我们去验证。</p>
-<p>第4行调用 strings_not_equal 去判断我们输入的字符串是否和程序中写死的全局变量中存放的字符串相等，如果相等则eax的值等于0,接<br>下来的第5行判断eax是否等于0, je表示相等则执行0x400ef7处的代码，第8行 add    $0x8,%rsp 的作用是恢复栈平衡，恢复栈平衡一般有<br>两种方法，一种是内平衡，一种是外平衡。第8行用的是内平衡，即在函数调用中恢复栈平衡叫做内平衡，在函数调用之外恢复栈平衡叫做<br>外平衡。</p>
+<p>第4行调用 strings_not_equal 去判断我们输入的字符串是否和程序中写死的全局变量中存放的字符串相等，如果相等则eax的值等于0,接<br>下来的第5行判断eax是否等于0, je表示相等则执行0x400ef7处的代码，第8行 add    $0x8,%rsp 的作用是恢复栈平衡，恢复栈平衡一般有<br>两种方法，一种是内平衡，一种是外平衡。第8行用的是内平衡，即在函数调用中恢复栈平衡叫做内平衡，在函数调用之外恢复栈平衡叫做<br>外平衡。本例中的内平衡相当与c语言中的stdcall。</p>
 <p>基于上述的推理，我们可以大胆的猜测: 判断函数 strings_not_equal 中用到了%rdi和%esi,其中%rdi是存储我们输入的内容，%esi是本关卡<br>的答案，如果我们是输入和本关卡中预先设置的答案一样则炸弹不会爆炸，即 Figure 1.2 第4行的返回值eax为0.</p>
 <p>当你进入strings_not_equal中时会发现最前面的几行如下:</p>
 <pre><code>1│ Dump of assembler code for function strings_not_equal:
@@ -155,7 +155,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/09/08/拆除csapp二进制炸弹超详细的解析之phase_1/" data-id="ck0asjvsj001dkpfx9ba5lqbu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/09/08/拆除csapp二进制炸弹超详细的解析之phase_1/" data-id="ck0aurpm8001dlnfx8rwx2fmx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/汇编与反汇编/">汇编与反汇编</a></li></ul>

@@ -16,7 +16,7 @@
 <meta property="og:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_1 继续解析phase_2。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb2.png">
-<meta property="og:updated_time" content="2019-09-08T09:44:50.681Z">
+<meta property="og:updated_time" content="2019-09-09T01:12:08.344Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="拆除csapp二进制炸弹超详细的解析之phase_2">
 <meta name="twitter:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_1 继续解析phase_2。">
@@ -143,7 +143,7 @@
 
 
                      Figure 2.2</code></pre><p>在 Figure 2.2 中第2行和第3行的两个的push作用是把%rbp和%rbx两个寄存器中的值入栈，起到了”保护现场”的作用。</p>
-<p>第4行的 sub    $0x28,%rsp 中的十六进制0x28相对应的十进制值为40,是编译器计算后觉得够用一般情况下默认设置的大小。</p>
+<p>第4行的 sub    $0x28,%rsp 中的十六进制0x28相对应的十进制值为40,是编译器计算后觉得够用设置的大小。</p>
 <p>第5行把栈顶rsp复制到rsi中。</p>
 <p>第6行 read_six_numbers 函数读入6个数，当我们执行到第6行 callq  0x40145c <read_six_numbers> 时，再执行si命令，跟进去会显示:</read_six_numbers></p>
 <pre><code> 1│ Dump of assembler code for function read_six_numbers:
@@ -170,7 +170,7 @@
 
 
                       Figure 2.3</code></pre><p>可以看到在 Figure 2.3 中第14行 cmp    $0x5,%eax ，即如果第13行 callq  0x400bf0 &lt;__isoc99_sscanf@plt&gt; 函数的返回值eax如果<br>大于5，即第15行 jg     0x401499 &lt;read_six_numbers+61&gt; 会执行，jg表示大于执行，所以会跳转到第17行 add    $0x18,%rsp ，<br>完成栈平衡。</p>
-<p>由于我们输入的内容是 I’m in phase_2 for test ，个人刚好为5,所以我们需要修改我们输入的内容，鉴于 Figure 2.2 中第7行<br>cmpl   $0x1,(%rsp)，这次我们把我们输入的6个数字都修改为1，再次重新运行我们的程序，当我们运行到 Figure 2.2 中第6行<br>read_six_numbers函数时，执行si命令，到达第7行，此时我们查看以rsp为起点连续内存中存储的6个数:</p>
+<p>由于我们输入的内容是 I’m in phase_2 for test ，个数刚好为5,所以我们需要修改我们输入的内容，鉴于 Figure 2.2 中第7行<br>cmpl   $0x1,(%rsp)，这次我们把我们输入的6个数字都修改为1，再次重新运行我们的程序，当我们运行到 Figure 2.2 中第6行<br>read_six_numbers函数时，执行si命令，到达第7行，此时我们查看以rsp为起点连续内存中存储的6个数:</p>
 <pre><code>(gdb) p $rsp
 $1 = (void *) 0x7fffffffdda0
 (gdb) x /6wd $rsp
@@ -183,7 +183,7 @@ $1 = (void *) 0x7fffffffdda0
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/09/09/拆除csapp二进制炸弹超详细的解析之phase_2/" data-id="ck0asjvsp001fkpfxloilbkvw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/09/09/拆除csapp二进制炸弹超详细的解析之phase_2/" data-id="ck0aurpme001flnfxtgwwjhsm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/汇编与反汇编/">汇编与反汇编</a></li></ul>
