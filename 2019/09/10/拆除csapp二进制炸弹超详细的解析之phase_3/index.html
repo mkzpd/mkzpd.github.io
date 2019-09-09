@@ -16,7 +16,7 @@
 <meta property="og:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_2 继续解析phase_3 。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb3.png">
-<meta property="og:updated_time" content="2019-09-09T04:02:33.337Z">
+<meta property="og:updated_time" content="2019-09-09T04:09:41.556Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="拆除csapp二进制炸弹超详细的解析之phase_3">
 <meta name="twitter:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_2 继续解析phase_3 。">
@@ -160,7 +160,7 @@
 <p>接下来的第8行，第9行，第10行比较重要了，因为牵涉到炸弹爆炸。第9行的jg在eax的值大于1时跳转到第10行explode_bomb函数的下一<br>行，刚好完美地跳过炸弹爆炸函数。结合第5行地址0x4025cf里面的两个%d，eax的值已经在第6行设置为0了，我们可以猜测sscanf的返回<br>值eax表示输入的数字个数，如果输入的数字个数少于1个就触发炸弹爆炸机制。</p>
 <p>第11行的 cmpl   $0x7,0x8(%rsp) ，比较第1个参数和7的大小，第12行的ja在第1个参数超过7时跳转到第29行执行炸弹爆炸函数，所以<br>第1个输入的数大小不能超过7，当小于7时执行第13行 mov    0x8(%rsp),%eax ，把第1个参数的值复制到eax中，第14行执行间接跳转<br>jmpq   *0x402470(,%rax,8) ，跳转的地址根据公式计算，即dst = 0x402470 + 8 * rax 。</p>
 <p>接下来的行到结尾出现了8次 jmp    0x400fbe &lt;phase_3+123&gt; ，很明显这就是c语言switch中的case语句，多路选择，只执行其中的一个。</p>
-<p>除去第30行的 mov    $0x0,%eax ，和后面一行的jmp语句，还有7个 jmp    0x400fbe &lt;phase_3+123&gt; ，结合前面说的第1个参数要小于7,<br>所以我们有了获取本关卡的答案思路，具体如下:</p>
+<p>结合前面说的第1个参数不能大于7,所以我们有了获取本关卡的答案思路，具体如下:</p>
 <p>首先检查以0x402470处为起始地址的连续8个内存地址里面的内容:</p>
 <pre><code>(gdb) x /8g 0x402470
 0x402470:       0x0000000000400f7c      0x0000000000400fb9
@@ -200,7 +200,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/09/10/拆除csapp二进制炸弹超详细的解析之phase_3/" data-id="ck0bvrimg001i1bfx06rck2cs" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/09/10/拆除csapp二进制炸弹超详细的解析之phase_3/" data-id="ck0bw0pv5001ikhfx8cmzfxyw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/汇编与反汇编/">汇编与反汇编</a></li></ul>
