@@ -16,7 +16,7 @@
 <meta property="og:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_4 继续解析phase_5 。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb5.png">
-<meta property="og:updated_time" content="2019-09-10T03:45:45.844Z">
+<meta property="og:updated_time" content="2019-09-10T03:56:02.208Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="拆除csapp二进制炸弹超详细的解析之phase_5">
 <meta name="twitter:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_4 继续解析phase_5 。">
@@ -164,7 +164,7 @@
 0x40245e:       &quot;flyers&quot;
 (gdb)</code></pre><p>第23行把flyers复制到esi，第24行把rsp加上0x10的地址结果存放到rdi，然后第25行调用 strings_not_equal 判断以我们输入的每个<br>字符的低4位为偏移组成的字符串是否和flyers相等，如果不相等则 strings_not_equal 函数的返回值eax不相等，那么就会跳转到<br>第28行，触发炸弹爆炸。如果eax等于0，则会跳转到第33行，然后检查栈保护是否正确，如果正确则跳转到第37行，安全退出phase_5。</p>
 <p>现在我们知道了怎么获取本关卡的答案了:</p>
-<p>因为字符串flyers全部被包含在字符串maduiersnfotvbyl中，我们可以看下flyers每个字符分别在maduiersnfotvbyl中的位置，我们<br>可以得到对应的索引是 9 15 14 5 6 7 ，这6个数字分别表示我们输入的6个字符中，每个字符的二进制表示中的低4位，我们输入的<br>6个字符可以全部是小写字母，但是要发现哪一个字母的二进制表示中低4位是9，或者15，或者14，或者5，或者6，或者7用手工法<br>一个去找太麻烦了，既费事费力还容易搞错，所以我写了一个程序，自动去找，源代码如下:</p>
+<p>因为字符串flyers全部被包含在字符串maduiersnfotvbyl中，我们可以看下flyers每个字符分别在maduiersnfotvbyl中的位置，我们<br>可以得到对应的索引是 9 15 14 5 6 7 ，这6个数字分别表示我们输入的6个字符中，每个字符的二进制表示中的低4位，我们输入的<br>6个字符可以全部是小写字母，但是要发现哪一个字母的二进制表示中低4位是9，或者15，或者14，或者5，或者6，或者7用手工法<br>一个个去找太麻烦了，既费事费力还容易搞错，所以我写了一个程序，自动去找，源代码如下:</p>
 <pre><code>#include &lt;stdio.h&gt;
 int main()       // 9 15 14 5 6 7
 {
@@ -200,7 +200,7 @@ int main()       // 9 15 14 5 6 7
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/09/12/拆除csapp二进制炸弹超详细的解析之phase_5/" data-id="ck0damhek001b3gfxncl1wl9u" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/09/12/拆除csapp二进制炸弹超详细的解析之phase_5/" data-id="ck0daz0h0001dvkfxo7dy5n2u" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/汇编与反汇编/">汇编与反汇编</a></li></ul>
