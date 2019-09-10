@@ -16,7 +16,7 @@
 <meta property="og:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_3 继续解析phase_4 。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb4.png">
-<meta property="og:updated_time" content="2019-09-09T11:06:18.102Z">
+<meta property="og:updated_time" content="2019-09-10T00:27:40.198Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="拆除csapp二进制炸弹超详细的解析之phase_4">
 <meta name="twitter:description" content="概述接着 拆除csapp二进制炸弹超详细的解析之phase_3 继续解析phase_4 。">
@@ -92,8 +92,8 @@
         <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>接着 拆除csapp二进制炸弹超详细的解析之phase_3 继续解析phase_4 。</p>
 <a id="more"></a>
 
-<h1 id="phase-4解析"><a href="#phase-4解析" class="headerlink" title="phase_4解析"></a>phase_4解析</h1><p><img src="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb4.png" alt="cgdb4截图"></p>
-<p>同样地首先执行si命令:</p>
+<p><img src="https://github.com/mkzpd/mkzpd.github.io/raw/master/pictures/cgdb4.png" alt="cgdb4截图"></p>
+<h1 id="phase-4解析"><a href="#phase-4解析" class="headerlink" title="phase_4解析"></a>phase_4解析</h1><p>同样地首先执行si命令:</p>
 <pre><code>128│ bomb.c:
 129│ 94          input = read_line();
 130├──&gt; 0x0000000000400e86 &lt;+230&gt;:   callq  0x40149e &lt;read_line&gt;
@@ -170,8 +170,8 @@
 
 
 
-            Figure 4.3</code></pre><p>在 Figure 4.3 中，第1行先开辟8字节空间，然后把edx里面的十进制14复制到eax，第4行从eax减去esi(十进制0)得到的结果放入eax中，<br>第5行把eax的值(现在为14)，复制到ecx中，第6行的shr是逻辑右移(sar是算术右移)，十六进制0x1f等于十进制31，ecx现在的值为十进制<br>14，二进制表示为1110，1110右移31位后变为0,即ecx里面现在是32个0,第7行的结果是eax现在为14,第8行的sar执行算术右移1位，即1110<br>右移1位，变为二进制的111(十进制为7)，现在eax的值变为7。第9行rax的值为7,rsi的值为0，所以ecx的值为7。</p>
-<p>上面提到edi里面存储的是我们的第一个参数，第10行比较ecx里面的值7和我们输入的第一个参数的大小，第11行jle表示如果7小于或等于<br>我们输入的第一个参数，则跳转到第16行，把eax设置为0,然后比较ecx和edi的大小，第18行的jge表示ecx大于或等于edi时跳转到第22行，<br>从func4这个函数返回，否则继续执行递归.由此我们可以得到第1个参数可以为7，如果第1个参数为7,则func4函数返回0。这时我们又回到<br>了phase_4函数的第17行，如下面的 Figure 4.4 所示:</p>
+            Figure 4.3</code></pre><p>在 Figure 4.3 中，第1行先开辟8字节空间，然后把edx里面的十进制14复制到eax，第4行从eax减去esi(十进制0)得到的结果放入eax中，<br>第5行把eax的值(现在为14)，复制到ecx中，第6行的shr是逻辑右移(sar是算术右移)，十六进制0x1f等于十进制31，ecx现在的值为十进制<br>14，二进制表示为1110，1110右移31位后变为0,即ecx里面现在是32个0,第7行的结果是eax现在为14,第8行的sar执行算术右移1位，即<br>1110右移1位，变为二进制的111(十进制为7)，现在eax的值变为7。第9行rax的值为7,rsi的值为0，所以ecx的值为7。</p>
+<p>上面提到edi里面存储的是我们的第一个参数，第10行比较ecx里面的值7和我们输入的第一个参数的大小，第11行jle表示如果7小于或等于<br>我们输入的第一个参数，则跳转到第16行，把eax设置为0,然后比较ecx和edi的大小，第18行的jge表示ecx大于或等于edi时跳转到第22<br>行，从func4这个函数返回，否则继续执行递归.由此我们可以得到第1个参数可以为7，如果第1个参数为7,则func4函数返回0。这时我们<br>又回到了phase_4函数的第17行，如下面的 Figure 4.4 所示:</p>
 <pre><code>15│    0x0000000000401044 &lt;+56&gt;:    mov    0x8(%rsp),%edi
 16│    0x0000000000401048 &lt;+60&gt;:    callq  0x400fce &lt;func4&gt;
 17│    0x000000000040104d &lt;+65&gt;:    test   %eax,%eax
@@ -185,13 +185,13 @@
 
 
 
-               Figure 4.4</code></pre><p>当我们的第一个参数是7时，func4的返回值eax为0，第18行的jne表示eax不等于0时，则跳转到 Figure 4.4 中的第21行，触发炸弹爆炸机制，<br>不过当第一个参数是7时，eax为0，不会触发炸弹爆炸机制，此时跳转到 Figure 4.4 中的第19行，判断第2个参数是否为0，如果第2个参数<br>等于0,则跳转到 Figure 4.4 中的第22行，接下来从phase_4中安全返回。</p>
+               Figure 4.4</code></pre><p>当我们的第一个参数是7时，func4的返回值eax为0，第18行的jne表示eax不等于0时，则跳转到 Figure 4.4 中的第21行，触发炸弹爆炸机<br>制，不过当第一个参数是7时，eax为0，不会触发炸弹爆炸机制，此时跳转到 Figure 4.4 中的第19行，判断第2个参数是否为0，如果第2<br>个参数等于0,则跳转到 Figure 4.4 中的第22行，接下来从phase_4中安全返回。</p>
 <p>所以我们得到本关卡的答案为 7 0</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/09/11/拆除csapp二进制炸弹超详细的解析之phase_4/" data-id="ck0caxkm90018omfxjhrvdh68" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/09/11/拆除csapp二进制炸弹超详细的解析之phase_4/" data-id="ck0damheq001e3gfx88ekaob5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/汇编与反汇编/">汇编与反汇编</a></li></ul>
@@ -201,6 +201,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2019/09/12/拆除csapp二进制炸弹超详细的解析之phase_5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          拆除csapp二进制炸弹超详细的解析之phase_5
+        
+      </div>
+    </a>
   
   
     <a href="/2019/09/10/拆除csapp二进制炸弹超详细的解析之phase_3/" id="article-nav-older" class="article-nav-link-wrap">
@@ -234,7 +243,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Leetcode/" style="font-size: 15px;">Leetcode</a> <a href="/tags/TCP-IP/" style="font-size: 20px;">TCP/IP</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a> <a href="/tags/汇编与反汇编/" style="font-size: 15px;">汇编与反汇编</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/系统编程/" style="font-size: 17.5px;">系统编程</a> <a href="/tags/网络编程/" style="font-size: 12.5px;">网络编程</a>
+      <a href="/tags/Leetcode/" style="font-size: 14px;">Leetcode</a> <a href="/tags/TCP-IP/" style="font-size: 20px;">TCP/IP</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/博客搭建/" style="font-size: 10px;">博客搭建</a> <a href="/tags/汇编与反汇编/" style="font-size: 16px;">汇编与反汇编</a> <a href="/tags/算法/" style="font-size: 10px;">算法</a> <a href="/tags/系统编程/" style="font-size: 18px;">系统编程</a> <a href="/tags/网络编程/" style="font-size: 12px;">网络编程</a>
     </div>
   </div>
 
@@ -256,6 +265,10 @@
       <ul>
         
           <li>
+            <a href="/2019/09/12/拆除csapp二进制炸弹超详细的解析之phase_5/">拆除csapp二进制炸弹超详细的解析之phase_5</a>
+          </li>
+        
+          <li>
             <a href="/2019/09/11/拆除csapp二进制炸弹超详细的解析之phase_4/">拆除csapp二进制炸弹超详细的解析之phase_4</a>
           </li>
         
@@ -269,10 +282,6 @@
         
           <li>
             <a href="/2019/09/08/拆除csapp二进制炸弹超详细的解析之phase_1/">拆除csapp二进制炸弹超详细的解析之phase_1</a>
-          </li>
-        
-          <li>
-            <a href="/2019/08/28/一个可以避免dns查询污染的工具/">一个可以避免dns查询污染的工具</a>
           </li>
         
       </ul>
